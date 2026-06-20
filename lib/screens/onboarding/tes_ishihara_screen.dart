@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/ishihara_option_button.dart';
+import 'package:colorsense/screens/onboarding/hasil_tes_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 04 - Tes Ishihara  |  Figma node: 4:71
@@ -78,9 +79,24 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
         _selectedOption = null; // reset selection
       });
     } else {
+      // Temporary logic: determine result based on the last selected option (question 8)
+      // Options for Q8: ['6', '8', '9', 'Tidak terlihat']
+      String dummyResult = 'Deuteranopia/Protanopia';
+      if (_selectedOption == '6') {
+        dummyResult = 'Tritanopia';
+      } else if (_selectedOption == '8') {
+        dummyResult = 'Deuteranopia/Protanopia';
+      } else if (_selectedOption == '9') {
+        dummyResult = 'Achromatopsia';
+      } else if (_selectedOption == 'Tidak terlihat') {
+        dummyResult = 'Tidak buta warna';
+      }
+
       // Finished 8 questions -> Navigate to 05 - Hasil Tes
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selesai! Lanjut ke Hasil Tes (belum dibuat)')),
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => HasilTesScreen(tipe: dummyResult),
+        ),
       );
     }
   }
