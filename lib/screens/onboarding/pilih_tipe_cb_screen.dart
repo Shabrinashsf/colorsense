@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
 import 'package:colorsense/widgets/option_card.dart';
+import 'package:colorsense/screens/onboarding/tes_ishihara_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 03 - Pilih Tipe CB  |  Figma node: 4:39
@@ -118,7 +119,21 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigate to next screen
+                    if (_selectedIndex == 3) {
+                      // 3 is "Belum tahu"
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const TesIshiharaScreen(),
+                        ),
+                      );
+                    } else {
+                      // Placeholder for 06 Keparahan / 07 Preferensi
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Screen selanjutnya belum diimplementasi'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Lanjut \u2192'), // Lanjut ->
                 ),
