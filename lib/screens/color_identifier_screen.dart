@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
-// Note: we can use DetailWarnaScreen later when we implement it.
+import 'package:colorsense/screens/detail_warna_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 11 - Color Identifier | Figma node: 6:129
@@ -155,28 +155,46 @@ class ColorIdentifierScreen extends StatelessWidget {
                     ),
 
                     // Percentage Button
+                    Container(
+                      width: 52,
+                      height: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF121126),
+                        border: Border.all(color: const Color(0xFF6C63FF)),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        '97%',
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: const Color(0xFF6C63FF),
+                          fontSize: 9,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Detail Button
                     GestureDetector(
                       onTap: () {
-                        // TODO: Navigate to 12 - Detail Warna
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Lanjut ke 12 Detail Warna (belum diimplementasi)'),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailWarnaScreen(),
                           ),
                         );
                       },
                       child: Container(
-                        width: 52,
                         height: 20,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF121126),
-                          border: Border.all(color: const Color(0xFF6C63FF)),
+                          color: AppColors.primary,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
-                          '97%',
+                          'Detail',
                           style: AppTextStyles.labelSmall.copyWith(
-                            color: const Color(0xFF6C63FF),
+                            color: const Color(0xFFF0F0FF),
                             fontSize: 9,
                           ),
                         ),

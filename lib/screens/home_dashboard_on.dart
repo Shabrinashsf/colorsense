@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
+import 'package:colorsense/screens/detail_warna_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 09 - Home Dashboard (Mode ON) | Figma node: 6:20
@@ -136,6 +137,14 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                       title: 'Biru Cobalt',
                       subtitle: '#2980B9 · via Kamera',
                       time: '2m',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailWarnaScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 8),
                     _buildRecentCard(
@@ -143,6 +152,14 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                       title: 'Hijau Emerald',
                       subtitle: '#27AE60 · via Foto',
                       time: '1j',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailWarnaScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -153,6 +170,15 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
             BottomNavbar(
               currentIndex: _bottomNavIndex,
               onTap: (index) {
+                if (index == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ColorIdentifierScreen(),
+                    ),
+                  );
+                  return;
+                }
                 setState(() {
                   _bottomNavIndex = index;
                 });
@@ -228,8 +254,11 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
     required String title,
     required String subtitle,
     required String time,
+    required VoidCallback onTap,
   }) {
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.surfaceSecondary,
@@ -278,6 +307,7 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
           ),
         ],
       ),
+    ),
     );
   }
 }
