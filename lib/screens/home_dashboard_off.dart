@@ -4,6 +4,7 @@ import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
+import 'package:colorsense/screens/contrast_checker.dart';
 
 // -----------------------------------------------------------------------------
 // 10 - Home Dashboard (Mode OFF) | Figma node: 136:1306
@@ -93,9 +94,16 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                             iconPath: 'assets/icons/ic_mask.svg',
                             title: 'Contrast Checker',
                             subtitle: 'Cek Kontras',
-                            bgColor: const Color(0xFF1D1B3F),
-                            borderColor: const Color(0xFF312D6F),
-                            onTap: () {},
+                            bgColor: const Color(0xFF1E1736),
+                            borderColor: const Color(0xFF281E48),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ContrastCheckerScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
