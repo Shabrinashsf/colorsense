@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:colorsense/screens/onboarding/onboarding_welcome_screen.dart';
 import 'package:colorsense/theme/app_theme.dart';
 
 // -----------------------------------------------------------------------------
@@ -29,7 +30,6 @@ class _SplashScreenState extends State<SplashScreen>
     // Fullscreen immersive
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-    // 0% -> 100% over 3 seconds
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -37,6 +37,17 @@ class _SplashScreenState extends State<SplashScreen>
     _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const OnboardingWelcomeScreen(),
+          ),
+        );
+      }
+    });
+
     _controller.forward();
   }
 
