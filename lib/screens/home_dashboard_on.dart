@@ -5,6 +5,10 @@ import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
 import 'package:colorsense/screens/contrast_checker.dart';
+import 'package:colorsense/screens/palet_warna.dart';
+import 'package:colorsense/screens/tersimpan.dart';
+import 'package:colorsense/screens/pengaturan.dart';
+import 'package:colorsense/screens/simulator_cb.dart';
 
 // -----------------------------------------------------------------------------
 // 09 - Home Dashboard (Mode ON) | Figma node: 6:20
@@ -110,9 +114,16 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                         Expanded(
                           child: _buildShortcutCard(
                             iconPath: 'assets/icons/ic_element4.svg',
-                            title: 'Palet CB-Safe',
-                            subtitle: '24+ Palet',
-                            onTap: () {},
+                            title: '24+ Palet',
+                            subtitle: 'Jelajahi warna',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const PaletWarnaScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -121,7 +132,14 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                             iconPath: 'assets/icons/ic_eye.svg',
                             title: 'Simulasi Buta Warna',
                             subtitle: '3 Tipe',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SimulatorCBScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -178,14 +196,34 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
             BottomNavbar(
               currentIndex: _bottomNavIndex,
               onTap: (index) {
-                if (index == 2) {
+                if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PaletWarnaScreen(),
+                    ),
+                  );
+                } else if (index == 2) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const ColorIdentifierScreen(),
                     ),
                   );
-                  return;
+                } else if (index == 3) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TersimpanScreen(),
+                    ),
+                  );
+                } else if (index == 4) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PengaturanScreen(),
+                    ),
+                  );
                 }
                 setState(() {
                   _bottomNavIndex = index;

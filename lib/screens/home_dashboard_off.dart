@@ -5,6 +5,10 @@ import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
 import 'package:colorsense/screens/contrast_checker.dart';
+import 'package:colorsense/screens/palet_warna.dart';
+import 'package:colorsense/screens/tersimpan.dart';
+import 'package:colorsense/screens/pengaturan.dart';
+import 'package:colorsense/screens/simulator_cb.dart';
 
 // -----------------------------------------------------------------------------
 // 10 - Home Dashboard (Mode OFF) | Figma node: 136:1306
@@ -114,11 +118,18 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                         Expanded(
                           child: _buildShortcutCard(
                             iconPath: 'assets/icons/ic_element4.svg',
-                            title: 'Palet CB-Safe',
-                            subtitle: '24+ Palet',
+                            title: '24+ Palet',
+                            subtitle: 'Jelajahi warna',
                             bgColor: const Color(0xFF2B1316),
                             borderColor: const Color(0xFF5A211F),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const PaletWarnaScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -129,7 +140,14 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                             subtitle: '3 Tipe',
                             bgColor: const Color(0xFF082925),
                             borderColor: const Color(0xFF065545),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SimulatorCBScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -186,19 +204,39 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
             BottomNavbar(
               currentIndex: _bottomNavIndex,
               onTap: (index) {
-                if (index == 2) {
+                if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PaletWarnaScreen(),
+                    ),
+                  );
+                } else if (index == 2) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const ColorIdentifierScreen(),
                     ),
                   );
-                  return;
+                } else if (index == 3) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TersimpanScreen(),
+                    ),
+                  );
+                } else if (index == 4) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PengaturanScreen(),
+                    ),
+                  );
+                } else {
+                  setState(() {
+                    _bottomNavIndex = index;
+                  });
                 }
-                setState(() {
-                  _bottomNavIndex = index;
-                });
-                // TODO: Handle tab switching logic later
               },
             ),
           ],
