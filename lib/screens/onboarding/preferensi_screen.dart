@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
+import 'package:colorsense/screens/onboarding/izin_kamera_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 07 - Preferensi  |  Figma node: 4:154
@@ -123,10 +124,10 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
                       return;
                     }
                     
-                    // TODO: Navigate to 08 - Izin Kamera
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lanjut ke 08 Izin Kamera (belum diimplementasi)'),
+                    // Navigate to 08 - Izin Kamera
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const IzinKameraScreen(),
                       ),
                     );
                   },

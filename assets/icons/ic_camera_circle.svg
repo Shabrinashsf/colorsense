@@ -1,0 +1,16 @@
+﻿<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 51">
+<g id="Ellipse">
+<circle cx="36" cy="36" r="36" fill="#6C63FF" fill-opacity="0.1"/>
+<circle cx="36" cy="36" r="35" stroke="#6C63FF" stroke-opacity="0.22" stroke-width="2"/>
+</g>
+<g id="camera">
+<path id="Vector" d="M26.3932 54.3333H45.6065C50.6665 54.3333 52.6832 51.235 52.9215 47.4583L53.8749 32.315C54.1315 28.355 50.9782 25 46.9999 25C45.8815 25 44.8549 24.3583 44.3415 23.3683L43.0215 20.71C42.1782 19.0417 39.9782 17.6667 38.1082 17.6667H33.9099C32.0215 17.6667 29.8215 19.0417 28.9782 20.71L27.6582 23.3683C27.1449 24.3583 26.1182 25 24.9999 25C21.0215 25 17.8682 28.355 18.1249 32.315L19.0782 47.4583C19.2982 51.235 21.3332 54.3333 26.3932 54.3333Z" stroke="#9D97FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M33.25 28.6667H38.75" stroke="#9D97FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M36 47C39.2817 47 41.9583 44.3233 41.9583 41.0417C41.9583 37.76 39.2817 35.0833 36 35.0833C32.7183 35.0833 30.0417 37.76 30.0417 41.0417C30.0417 44.3233 32.7183 47 36 47Z" stroke="#9D97FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Vector_4" opacity="0">
+</g>
+</g>
+</g>
+</svg>
+
