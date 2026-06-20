@@ -4,6 +4,7 @@ import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
 import 'package:colorsense/widgets/option_card.dart';
 import 'package:colorsense/screens/onboarding/tes_ishihara_screen.dart';
+import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 03 - Pilih Tipe CB  |  Figma node: 4:39
@@ -126,11 +127,18 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
                           builder: (_) => const TesIshiharaScreen(),
                         ),
                       );
+                    } else if (_selectedIndex == 0 || _selectedIndex == 1) {
+                      // 0: Tritanopia, 1: Deuteranopia/Protanopia -> Keparahan
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const KeparahanScreen(),
+                        ),
+                      );
                     } else {
-                      // Placeholder for 06 Keparahan / 07 Preferensi
+                      // 2: Achromatopsia, 4: Normal -> Preferensi
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Screen selanjutnya belum diimplementasi'),
+                          content: Text('Screen 07 Preferensi belum diimplementasi'),
                         ),
                       );
                     }

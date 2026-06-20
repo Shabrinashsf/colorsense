@@ -34,12 +34,9 @@ class StepIndicator extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(totalSteps, (i) {
               final stepIndex = i + 1;
-              final isActive = stepIndex <= currentStep;
+              final isCurrent = stepIndex == currentStep;
               
-              if (stepIndex == 1) {
-                return _buildStep1(isActive);
-              }
-              return _buildSmallStep(stepIndex, isActive);
+              return _buildStep(stepIndex, isCurrent);
             }),
           ),
         ],
@@ -47,37 +44,29 @@ class StepIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildStep1(bool isActive) {
-    return Container(
-      height: 22,
-      width: 118,
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : AppColors.primaryDark,
-        borderRadius: BorderRadius.circular(11),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        '1 \u2014 SELAMAT DATANG',
-        style: AppTextStyles.labelXSmall.copyWith(
-          color: isActive ? AppColors.textOnPrimary : AppColors.textLabel,
-        ),
-      ),
-    );
+  String _getStepTitle(int stepIndex) {
+    switch (stepIndex) {
+      case 1: return '1 \u2014 SELAMAT DATANG';
+      case 2: return '2 \u2014 KONDISI DIRI';
+      case 3: return '3 \u2014 KEPARAHAN';
+      case 4: return '4 \u2014 PREFERENSI';
+      default: return '$stepIndex';
+    }
   }
 
-  Widget _buildSmallStep(int stepIndex, bool isActive) {
+  Widget _buildStep(int stepIndex, bool isCurrent) {
     return Container(
-      width: 23,
       height: 22,
+      width: isCurrent ? 118 : 23,
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : AppColors.primaryDark,
+        color: isCurrent ? AppColors.primary : AppColors.primaryDark,
         borderRadius: BorderRadius.circular(11),
       ),
       alignment: Alignment.center,
       child: Text(
-        '$stepIndex',
+        isCurrent ? _getStepTitle(stepIndex) : '$stepIndex',
         style: AppTextStyles.labelXSmall.copyWith(
-          color: isActive ? AppColors.textOnPrimary : AppColors.textLabel,
+          color: isCurrent ? AppColors.textOnPrimary : AppColors.textLabel,
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 05 - Hasil Tes  |  Figma node: 4:93
@@ -209,7 +210,19 @@ class HasilTesScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Navigate to 06 - Keparahan
+                    if (tipe == 'Tritanopia' || tipe == 'Deuteranopia/Protanopia') {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const KeparahanScreen(),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Lanjut ke 07 Preferensi (belum diimplementasi)'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Lanjut \u2192'),
                 ),
