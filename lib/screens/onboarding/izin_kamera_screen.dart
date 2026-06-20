@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/screens/home_dashboard_off.dart';
 
 // -----------------------------------------------------------------------------
 // 08 - Izin Kamera  |  Figma node: 6:2
@@ -97,11 +98,12 @@ class IzinKameraScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Request camera permission then Navigate to 09/10 - Home Dashboard
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lanjut ke Home Dashboard (belum diimplementasi)'),
+                    // Navigate to 10 - Home Dashboard (Mode OFF) by default
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => const HomeDashboardOffScreen(),
                       ),
+                      (route) => false, // Remove all previous routes since Onboarding is done
                     );
                   },
                   child: const Text('Izinkan Akses Kamera'),
@@ -113,11 +115,12 @@ class IzinKameraScreen extends StatelessWidget {
               // ── Text Button ──────────────────────────────────────────
               GestureDetector(
                 onTap: () {
-                  // TODO: Handle rejection then Navigate to 09/10 - Home Dashboard
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Lanjut ke Home Dashboard (belum diimplementasi)'),
+                  // Navigate to 10 - Home Dashboard (Mode OFF) by default
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (_) => const HomeDashboardOffScreen(),
                     ),
+                    (route) => false,
                   );
                 },
                 child: Padding(
