@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
+import 'package:colorsense/screens/onboarding/preferensi_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 05 - Hasil Tes  |  Figma node: 4:93
@@ -217,9 +218,9 @@ class HasilTesScreen extends StatelessWidget {
                         ),
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Lanjut ke 07 Preferensi (belum diimplementasi)'),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const PreferensiScreen(),
                         ),
                       );
                     }

@@ -5,6 +5,7 @@ import 'package:colorsense/widgets/step_indicator.dart';
 import 'package:colorsense/widgets/option_card.dart';
 import 'package:colorsense/screens/onboarding/tes_ishihara_screen.dart';
 import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
+import 'package:colorsense/screens/onboarding/preferensi_screen.dart';
 
 // -----------------------------------------------------------------------------
 // 03 - Pilih Tipe CB  |  Figma node: 4:39
@@ -136,9 +137,9 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
                       );
                     } else {
                       // 2: Achromatopsia, 4: Normal -> Preferensi
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Screen 07 Preferensi belum diimplementasi'),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const PreferensiScreen(),
                         ),
                       );
                     }
