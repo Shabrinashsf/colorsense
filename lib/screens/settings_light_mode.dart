@@ -6,6 +6,8 @@ import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/palet_warna.dart';
 import 'package:colorsense/screens/tersimpan.dart';
 import 'package:colorsense/screens/pengaturan.dart';
+import 'package:colorsense/screens/ukuran_teks.dart';
+import 'package:colorsense/screens/keparahan_settings.dart';
 
 // -----------------------------------------------------------------------------
 // 20 - Settings Light Mode | Figma node: 136:972
@@ -121,7 +123,12 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                             title: 'Tipe Buta Warna',
                             trailingText: 'Deuteranopia - Sedang',
                             onTap: () {
-                              // TODO: Navigate to 22 Keparahan Settings
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const KeparahanSettingsScreen(),
+                                ),
+                              );
                             },
                           ),
                           _buildDivider(),
@@ -182,7 +189,12 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                             title: 'Ukuran Teks',
                             trailingText: 'Normal',
                             onTap: () {
-                              // TODO: Navigate to 21 Ukuran Teks
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UkuranTeksScreen(),
+                                ),
+                              );
                             },
                           ),
                         ],
