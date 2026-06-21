@@ -53,7 +53,6 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -75,7 +74,7 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
               // ── Headline ─────────────────────────────────────────────
               Text(
                 'Warna apa yang\nsulit dibedakan?',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   height: 30 / 24,
                 ),
               ),
@@ -85,7 +84,7 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
               // ── Sub-headline ─────────────────────────────────────────
               Text(
                 'Pilih kondisi kamu. App akan menyesuaikan filter, palet, dan tampilan secara otomatis.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   fontSize: 11,
                   height: 17 / 11,
                 ),

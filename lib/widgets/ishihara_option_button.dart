@@ -33,7 +33,7 @@ class IshiharaOptionButton extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: AppTextStyles.titleSmall.copyWith(
+          style: context.textStyles.titleSmall.copyWith(
             fontSize: text.length > 2 ? 13 : 15,
             color: isSelected ? const Color(0xFF9D97FF) : AppColors.textPrimary,
           ),

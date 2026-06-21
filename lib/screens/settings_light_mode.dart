@@ -51,7 +51,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                     // ── Header ─────────────────────────────────────────────
                     Text(
                       'Pengaturan',
-                      style: AppTextStyles.headlineLarge.copyWith(
+                      style: context.textStyles.headlineLarge.copyWith(
                         color: _textDark,
                         fontSize: 17,
                       ),
@@ -81,7 +81,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                               children: [
                                 Text(
                                   'Ama',
-                                  style: AppTextStyles.headlineMedium.copyWith(
+                                  style: context.textStyles.headlineMedium.copyWith(
                                     color: _textDark,
                                     fontSize: 12,
                                   ),
@@ -89,7 +89,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                                 const SizedBox(height: 1),
                                 Text(
                                   'Bio',
-                                  style: AppTextStyles.bodySmall.copyWith(
+                                  style: context.textStyles.bodySmall.copyWith(
                                     color: _textGrey,
                                     fontSize: 9,
                                   ),
@@ -99,7 +99,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                           ),
                           Text(
                             'Edit',
-                            style: AppTextStyles.labelMedium.copyWith(
+                            style: context.textStyles.labelMedium.copyWith(
                               color: const Color(0xFF6C63FF),
                               fontSize: 9,
                             ),
@@ -237,7 +237,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _buildBottomNavItem(
-                    iconPath: 'assets/icons/ic_home.svg',
+                    iconPath: 'assets/icons/ic_home2.svg',
                     label: 'Home',
                     isActive: false,
                     onTap: () {
@@ -249,7 +249,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                     },
                   ),
                   _buildBottomNavItem(
-                    iconPath: 'assets/icons/ic_element4.svg',
+                    iconPath: 'assets/icons/ic_bubble.svg',
                     label: 'Palet',
                     isActive: false,
                     onTap: () {
@@ -260,7 +260,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                     },
                   ),
                   _buildBottomNavItem(
-                    iconPath: 'assets/icons/ic_camera.svg',
+                    iconPath: 'assets/icons/ic_instagram.svg',
                     label: 'Kamera',
                     isActive: false,
                     onTap: () {
@@ -271,7 +271,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                     },
                   ),
                   _buildBottomNavItem(
-                    iconPath: 'assets/icons/ic_save_outline.svg', // using generic for now
+                    iconPath: 'assets/icons/ic_archive_minus.svg',
                     label: 'Simpan',
                     isActive: false,
                     onTap: () {
@@ -282,7 +282,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
                     },
                   ),
                   _buildBottomNavItem(
-                    iconPath: 'assets/icons/ic_setting.svg',
+                    iconPath: 'assets/icons/ic_setting2.svg',
                     label: 'Setting',
                     isActive: true,
                     onTap: () {},
@@ -318,7 +318,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
           const SizedBox(height: 4),
           Text(
             label,
-            style: AppTextStyles.labelSmall.copyWith(
+            style: context.textStyles.labelSmall.copyWith(
               color: color,
               fontSize: 10,
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
@@ -334,7 +334,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
       padding: const EdgeInsets.only(bottom: 5),
       child: Text(
         title,
-        style: AppTextStyles.labelMedium.copyWith(
+        style: context.textStyles.labelMedium.copyWith(
           color: _sectionTitle,
           fontSize: 8,
           letterSpacing: 1,
@@ -368,14 +368,14 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
           children: [
             Text(
               title,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.textStyles.bodySmall.copyWith(
                 color: _textDark,
                 fontSize: 10,
               ),
             ),
             Text(
               trailingText,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.textStyles.bodySmall.copyWith(
                 color: _textGrey,
                 fontSize: 9,
               ),
@@ -401,7 +401,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
           children: [
             Text(
               title,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.textStyles.bodySmall.copyWith(
                 color: _textDark,
                 fontSize: 10,
               ),
@@ -426,7 +426,7 @@ class _SettingsLightModeScreenState extends State<SettingsLightModeScreen> {
         children: [
           Text(
             title,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.textStyles.bodySmall.copyWith(
               color: _textDark,
               fontSize: 10,
             ),

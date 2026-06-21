@@ -108,7 +108,6 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
     final progressFraction = progressNumber / _questions.length;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -129,8 +128,8 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
                 ),
                 child: Text(
                   'TES ISHIHARA \u2014 SOAL $progressNumber DARI ${_questions.length}',
-                  style: AppTextStyles.labelXSmall.copyWith(
-                    color: const Color(0xFF9D97FF),
+                  style: context.textStyles.labelXSmall.copyWith(
+                    color: context.colors.textLabel,
                   ),
                 ),
               ),
@@ -141,7 +140,7 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
               Text(
                 'Angka berapa yang\nkamu lihat?',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   height: 28 / 24,
                 ),
               ),
@@ -152,7 +151,7 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
               Text(
                 'Lihat gambar dengan seksama. Lalu pilih jawaban yang sesuai.',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   fontSize: 11,
                   height: 17 / 11,
                 ),
@@ -183,7 +182,7 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
                         Container(
                           height: 3,
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.06),
+                            color: context.colors.textMuted,
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
@@ -203,7 +202,7 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
                   const SizedBox(width: 8),
                   Text(
                     '$progressNumber/${_questions.length}',
-                    style: AppTextStyles.labelXSmall.copyWith(
+                    style: context.textStyles.labelXSmall.copyWith(
                       color: const Color(0xFF606080),
                       fontSize: 9,
                       fontWeight: FontWeight.w600,

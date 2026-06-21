@@ -17,7 +17,6 @@ class DetailWarnaScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -36,15 +35,19 @@ class DetailWarnaScreen extends StatelessWidget {
                         GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
                           child: SvgPicture.asset(
-                            'assets/icons/ic_arrow_left_circle.svg',
-                            width: 24,
-                            height: 24,
-                          ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                         ),
                         const SizedBox(width: 10),
                         Text(
                           'Detail Warna',
-                          style: AppTextStyles.headlineMedium.copyWith(
+                          style: context.textStyles.headlineMedium.copyWith(
                             fontSize: 13,
                           ),
                         ),
@@ -64,7 +67,7 @@ class DetailWarnaScreen extends StatelessWidget {
                       ),
                       child: Text(
                         'Biru Cobalt',
-                        style: AppTextStyles.headlineLarge.copyWith(
+                        style: context.textStyles.headlineLarge.copyWith(
                           fontSize: 14,
                         ),
                       ),
@@ -74,8 +77,8 @@ class DetailWarnaScreen extends StatelessWidget {
                     // ── Nilai Warna ────────────────────────────────────────
                     Text(
                       'NILAI WARNA',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         fontSize: 8,
                         letterSpacing: 1,
                       ),
@@ -84,16 +87,16 @@ class DetailWarnaScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(11),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildColorValue(label: 'HEX', value: '#0047AB'),
-                          _buildColorValue(label: 'RGB', value: '41,128,185'),
-                          _buildColorValue(label: 'HSL', value: '204-78-44'),
+                          _buildColorValue(context, label: 'HEX', value: '#0047AB'),
+                          _buildColorValue(context, label: 'RGB', value: '41,128,185'),
+                          _buildColorValue(context, label: 'HSL', value: '204-78-44'),
                         ],
                       ),
                     ),
@@ -102,8 +105,8 @@ class DetailWarnaScreen extends StatelessWidget {
                     // ── Foto Hasil Scan ────────────────────────────────────
                     Text(
                       'FOTO HASIL SCAN',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         fontSize: 8,
                         letterSpacing: 1,
                       ),
@@ -113,8 +116,8 @@ class DetailWarnaScreen extends StatelessWidget {
                       height: 138,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(11),
                       ),
                       child: Center(
@@ -128,9 +131,9 @@ class DetailWarnaScreen extends StatelessWidget {
                           ),
                           child: Text(
                             'OBJEK',
-                            style: AppTextStyles.headlineMedium.copyWith(
+                            style: context.textStyles.headlineMedium.copyWith(
                               fontSize: 11,
-                              color: Colors.white.withValues(alpha: 0.8),
+                              color: context.colors.textMuted,
                             ),
                           ),
                         ),
@@ -141,8 +144,8 @@ class DetailWarnaScreen extends StatelessWidget {
                     // ── Tampak Oleh Tipe Buta Warna Lain ───────────────────
                     Text(
                       'TAMPAK OLEH TIPE BUTA WARNA LAIN',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         fontSize: 8,
                         letterSpacing: 0.5,
                       ),
@@ -151,28 +154,28 @@ class DetailWarnaScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(11),
                       ),
                       child: Column(
                         children: [
-                          _buildSimulationRow(
+                          _buildSimulationRow(context,
                             color: const Color(0xFF2E5EA1),
                             text: 'Deuteranopia — abu kebiruan',
                           ),
                           const SizedBox(height: 3),
-                          _buildSimulationRow(
+                          _buildSimulationRow(context,
                             color: const Color(0xFF54749F),
                             text: 'Protanopia — tampak biru-hijau',
                           ),
                           const SizedBox(height: 3),
-                          _buildSimulationRow(
+                          _buildSimulationRow(context,
                             color: const Color(0xFF0047AB),
                             text: 'Tritanopia — normal',
                           ),
                           const SizedBox(height: 3),
-                          _buildSimulationRow(
+                          _buildSimulationRow(context,
                             color: const Color(0xFF808080),
                             text: 'Achromatopsia — abu sedang',
                           ),
@@ -185,7 +188,7 @@ class DetailWarnaScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
+                        color: context.colors.surfaceSecondary,
                         border: Border.all(color: AppColors.primary),
                         borderRadius: BorderRadius.circular(9),
                       ),
@@ -203,8 +206,8 @@ class DetailWarnaScreen extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 3),
                               child: Text(
                                 '"Warna ini seperti laut biru di tengah samudera🌊"',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: const Color(0xFFAFADDF),
+                                style: context.textStyles.bodySmall.copyWith(
+                                  color: context.colors.textMuted,
                                   fontSize: 9,
                                 ),
                               ),
@@ -242,8 +245,8 @@ class DetailWarnaScreen extends StatelessWidget {
                         child: Container(
                           height: 48, // slightly bigger than Figma 36px for better touch
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceSecondary,
-                            border: Border.all(color: const Color(0xFF1E1E30)),
+                            color: context.colors.surfaceSecondary,
+                            border: Border.all(color: context.colors.borderDefault),
                             borderRadius: BorderRadius.circular(9),
                           ),
                           child: Row(
@@ -257,8 +260,8 @@ class DetailWarnaScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               Text(
                                 'Simpan',
-                                style: AppTextStyles.labelMedium.copyWith(
-                                  color: Colors.white,
+                                style: context.textStyles.labelMedium.copyWith(
+                                  color: context.colors.textPrimary,
                                   fontSize: 11,
                                 ),
                               ),
@@ -294,8 +297,8 @@ class DetailWarnaScreen extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               'Bagikan',
-                              style: AppTextStyles.labelMedium.copyWith(
-                                color: const Color(0xFFF0F0FF),
+                              style: context.textStyles.labelMedium.copyWith(
+                                color: context.colors.textPrimary,
                                 fontSize: 11,
                               ),
                             ),
@@ -313,21 +316,21 @@ class DetailWarnaScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildColorValue({required String label, required String value}) {
+  Widget _buildColorValue(BuildContext context, {required String label, required String value}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           value,
-          style: AppTextStyles.headlineMedium.copyWith(
-            color: const Color(0xFFD0D0F0),
+          style: context.textStyles.headlineMedium.copyWith(
+            color: context.colors.textSecondary,
             fontSize: 11,
           ),
         ),
         Text(
           label,
-          style: AppTextStyles.labelSmall.copyWith(
-            color: const Color(0xFFAFADDF),
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.colors.textMuted,
             fontSize: 7,
           ),
         ),
@@ -335,7 +338,7 @@ class DetailWarnaScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSimulationRow({required Color color, required String text}) {
+  Widget _buildSimulationRow(BuildContext context, {required Color color, required String text}) {
     return Row(
       children: [
         Container(
@@ -349,8 +352,8 @@ class DetailWarnaScreen extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           text,
-          style: AppTextStyles.labelSmall.copyWith(
-            color: const Color(0xFFAFADDF),
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.colors.textMuted,
             fontSize: 8,
           ),
         ),

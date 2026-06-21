@@ -28,7 +28,6 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -50,7 +49,7 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
               // ── Headline ─────────────────────────────────────────────
               Text(
                 'Dunia warna menjadi lebih jelas!',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   height: 32 / 24,
                 ),
               ),
@@ -60,7 +59,7 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
               // ── Sub-headline ─────────────────────────────────────────
               Text(
                 'ColorSense membantu untuk mengidentifikasi, memahami, dan beradaptasi dengan warna.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   height: 18 / 12,
                 ),
               ),
@@ -72,7 +71,7 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
                 width: double.infinity,
                 height: 150,
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceSecondary, // #12121b
+                  color: context.colors.surfaceSecondary, // #12121b
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Column(
@@ -87,7 +86,7 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
                     Text(
                       'Identifikasi \u00B7 Filter \u00B7 Simulasi\nPalet Aman \u00B7 Contrast Checker',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.bodySmall.copyWith(
+                      style: context.textStyles.bodySmall.copyWith(
                         height: 17 / 11,
                       ),
                     ),
@@ -100,15 +99,15 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
               // ── Input Name ───────────────────────────────────────────
               Text(
                 'NAMA',
-                style: AppTextStyles.labelXSmall.copyWith(
+                style: context.textStyles.labelXSmall.copyWith(
                   letterSpacing: 1.0,
                 ),
               ),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _nameController,
-                style: AppTextStyles.titleSmall.copyWith(
-                  color: AppColors.textPrimary,
+                style: context.textStyles.titleSmall.copyWith(
+                  color: context.colors.textPrimary,
                 ),
                 decoration: const InputDecoration(
                   hintText: 'Nama kamu (opsional)',

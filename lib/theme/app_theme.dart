@@ -1,6 +1,148 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ---------------------------------------------------------------------------
+// AppThemeColors — semantic colour token, resolved per theme
+// ---------------------------------------------------------------------------
+class AppThemeColors extends ThemeExtension<AppThemeColors> {
+  const AppThemeColors({
+    required this.backgroundPrimary,
+    required this.surfacePrimary,
+    required this.surfaceSecondary,
+    required this.surfaceActive,
+    required this.borderDefault,
+    required this.borderActive,
+    required this.borderInput,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textMuted,
+    required this.textLabel,
+    required this.navbarBg,
+    required this.navbarBorder,
+    required this.navInactive,
+    required this.sectionTitle,
+  });
+
+  final Color backgroundPrimary;
+  final Color surfacePrimary;
+  final Color surfaceSecondary;
+  final Color surfaceActive;
+  final Color borderDefault;
+  final Color borderActive;
+  final Color borderInput;
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color textMuted;
+  final Color textLabel;
+  final Color navbarBg;
+  final Color navbarBorder;
+  final Color navInactive;
+  final Color sectionTitle;
+
+  // ── Dark (default) ────────────────────────────────────────────────────
+  static const AppThemeColors dark = AppThemeColors(
+    backgroundPrimary: Color(0xFF0A0A14),
+    surfacePrimary: Color(0xFF12121E),
+    surfaceSecondary: Color(0xFF12121B),
+    surfaceActive: Color(0xFF121126),
+    borderDefault: Color(0xFF1E1E30),
+    borderActive: Color(0xFF36327D),
+    borderInput: Color(0x996C63FF),
+    textPrimary: Color(0xFFF0F0FF),
+    textSecondary: Color(0xFFD0D0F0),
+    textMuted: Color(0xFFAFADDF),
+    textLabel: Color(0xFF9D97FF),
+    navbarBg: Color(0xFF09090F),
+    navbarBorder: Color(0xFF9D97FF),
+    navInactive: Color(0xFFFFFFFF),
+    sectionTitle: Color(0xFF9D97FF),
+  );
+
+  // ── Light ─────────────────────────────────────────────────────────────
+  static const AppThemeColors light = AppThemeColors(
+    backgroundPrimary: Color(0xFFF5F5FF),
+    surfacePrimary: Color(0xFFFFFFFF),
+    surfaceSecondary: Color(0xFFF0F0FA),
+    surfaceActive: Color(0xFFEAEAFF),
+    borderDefault: Color(0xFFE0E0F0),
+    borderActive: Color(0xFFB0A8FF),
+    borderInput: Color(0x996C63FF),
+    textPrimary: Color(0xFF1A1A2E),
+    textSecondary: Color(0xFF3A3A5C),
+    textMuted: Color(0xFF8080A0),
+    textLabel: Color(0xFF6C63FF),
+    navbarBg: Color(0xFFFFFFFF),
+    navbarBorder: Color(0xFFE0E0F0),
+    navInactive: Color(0xFF8080A0),
+    sectionTitle: Color(0xFF6C6C75),
+  );
+
+  @override
+  AppThemeColors copyWith({
+    Color? backgroundPrimary,
+    Color? surfacePrimary,
+    Color? surfaceSecondary,
+    Color? surfaceActive,
+    Color? borderDefault,
+    Color? borderActive,
+    Color? borderInput,
+    Color? textPrimary,
+    Color? textSecondary,
+    Color? textMuted,
+    Color? textLabel,
+    Color? navbarBg,
+    Color? navbarBorder,
+    Color? navInactive,
+    Color? sectionTitle,
+  }) {
+    return AppThemeColors(
+      backgroundPrimary: backgroundPrimary ?? this.backgroundPrimary,
+      surfacePrimary: surfacePrimary ?? this.surfacePrimary,
+      surfaceSecondary: surfaceSecondary ?? this.surfaceSecondary,
+      surfaceActive: surfaceActive ?? this.surfaceActive,
+      borderDefault: borderDefault ?? this.borderDefault,
+      borderActive: borderActive ?? this.borderActive,
+      borderInput: borderInput ?? this.borderInput,
+      textPrimary: textPrimary ?? this.textPrimary,
+      textSecondary: textSecondary ?? this.textSecondary,
+      textMuted: textMuted ?? this.textMuted,
+      textLabel: textLabel ?? this.textLabel,
+      navbarBg: navbarBg ?? this.navbarBg,
+      navbarBorder: navbarBorder ?? this.navbarBorder,
+      navInactive: navInactive ?? this.navInactive,
+      sectionTitle: sectionTitle ?? this.sectionTitle,
+    );
+  }
+
+  @override
+  AppThemeColors lerp(AppThemeColors? other, double t) {
+    if (other is! AppThemeColors) return this;
+    return AppThemeColors(
+      backgroundPrimary: Color.lerp(backgroundPrimary, other.backgroundPrimary, t)!,
+      surfacePrimary: Color.lerp(surfacePrimary, other.surfacePrimary, t)!,
+      surfaceSecondary: Color.lerp(surfaceSecondary, other.surfaceSecondary, t)!,
+      surfaceActive: Color.lerp(surfaceActive, other.surfaceActive, t)!,
+      borderDefault: Color.lerp(borderDefault, other.borderDefault, t)!,
+      borderActive: Color.lerp(borderActive, other.borderActive, t)!,
+      borderInput: Color.lerp(borderInput, other.borderInput, t)!,
+      textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
+      textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
+      textMuted: Color.lerp(textMuted, other.textMuted, t)!,
+      textLabel: Color.lerp(textLabel, other.textLabel, t)!,
+      navbarBg: Color.lerp(navbarBg, other.navbarBg, t)!,
+      navbarBorder: Color.lerp(navbarBorder, other.navbarBorder, t)!,
+      navInactive: Color.lerp(navInactive, other.navInactive, t)!,
+      sectionTitle: Color.lerp(sectionTitle, other.sectionTitle, t)!,
+    );
+  }
+}
+
+// Convenient BuildContext extension
+extension AppThemeContext on BuildContext {
+  AppThemeColors get colors =>
+      Theme.of(this).extension<AppThemeColors>() ?? AppThemeColors.dark;
+}
+
 class AppColors {
   AppColors._();
   static const Color backgroundDeep = Color(0xFF09090F);
@@ -68,6 +210,40 @@ class AppTextStyles {
   static TextStyle get colorName => GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary);
   static TextStyle get colorCode => GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w400, color: AppColors.textMuted);
   static TextStyle get confidenceScore => GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w400, color: AppColors.textLabel);
+}
+
+extension AppTextStylesExt on BuildContext {
+  AppTextTheme get textStyles => AppTextTheme(this);
+}
+
+class AppTextTheme {
+  final BuildContext context;
+  AppTextTheme(this.context);
+
+  TextStyle get displayLarge => GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w800, color: context.colors.textPrimary);
+  TextStyle get headlineLarge => GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w800, color: context.colors.textPrimary, height: 32 / 24);
+  TextStyle get headlineMedium => GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800, color: context.colors.textPrimary);
+  TextStyle get headlineSmall => GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w800, color: context.colors.textPrimary, height: 22 / 17);
+  TextStyle get titleLarge => GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: context.colors.textPrimary);
+  TextStyle get titleMedium => GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w600, color: context.colors.textPrimary);
+  TextStyle get titleSmall => GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: context.colors.textSecondary);
+  TextStyle get bodyLarge => GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: context.colors.textMuted, height: 1.5);
+  TextStyle get bodyMedium => GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w400, color: context.colors.textMuted, height: 19 / 12);
+  TextStyle get bodySmall => GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w400, color: context.colors.textMuted, height: 17 / 11);
+  TextStyle get labelLarge => GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w700, color: context.colors.textPrimary);
+  TextStyle get labelMedium => GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w600, color: context.colors.textLabel, letterSpacing: 1.0);
+  TextStyle get labelSmall => GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w400, color: context.colors.textMuted);
+  TextStyle get labelXSmall => GoogleFonts.plusJakartaSans(fontSize: 8, fontWeight: FontWeight.w700, color: context.colors.textLabel, letterSpacing: 0.8);
+  TextStyle get labelXSmallOnPrimary => GoogleFonts.plusJakartaSans(fontSize: 8, fontWeight: FontWeight.w600, color: AppColors.textOnPrimary, letterSpacing: 0.8);
+  TextStyle get buttonPrimary => GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w700, color: context.colors.textPrimary);
+  TextStyle get buttonSecondary => GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.primary);
+  TextStyle get progressLabel => GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.primary);
+  TextStyle get loadingText => GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w500, color: AppColors.primaryLight);
+  TextStyle get navLabel => GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w400);
+  TextStyle get answerNumber => GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w700, color: context.colors.textPrimary);
+  TextStyle get colorName => GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w600, color: context.colors.textPrimary);
+  TextStyle get colorCode => GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w400, color: context.colors.textMuted);
+  TextStyle get confidenceScore => GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w400, color: context.colors.textLabel);
 }
 
 class AppSpacing {
@@ -157,12 +333,15 @@ class AppTheme {
         brightness: Brightness.dark,
         colorScheme: _colorScheme,
         scaffoldBackgroundColor: AppColors.backgroundPrimary,
+        extensions: const <ThemeExtension<dynamic>>[
+          AppThemeColors.dark,
+        ],
         appBarTheme: AppBarTheme(
           backgroundColor: AppColors.backgroundPrimary,
           elevation: 0,
           scrolledUnderElevation: 0,
           centerTitle: false,
-          titleTextStyle: AppTextStyles.titleLarge,
+          titleTextStyle: AppTextStyles.headlineMedium,
           iconTheme: const IconThemeData(color: AppColors.textPrimary, size: AppIconSize.nav),
         ),
         textTheme: TextTheme(
@@ -224,23 +403,6 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: AppRadius.pillBR),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: AppColors.backgroundDeep,
-          selectedItemColor: AppColors.navActive,
-          unselectedItemColor: AppColors.navInactive,
-          selectedLabelStyle: AppTextStyles.navLabel.copyWith(color: AppColors.navActive),
-          unselectedLabelStyle: AppTextStyles.navLabel.copyWith(color: AppColors.navInactive),
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-        ),
-        navigationBarTheme: NavigationBarThemeData(
-          backgroundColor: AppColors.backgroundDeep,
-          indicatorColor: AppColors.primaryFill,
-          labelTextStyle: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppTextStyles.navLabel.copyWith(color: AppColors.navActive) : AppTextStyles.navLabel.copyWith(color: AppColors.navInactive)),
-          iconTheme: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? const IconThemeData(color: AppColors.navActive, size: AppIconSize.nav) : const IconThemeData(color: AppColors.navInactive, size: AppIconSize.nav)),
-        ),
         switchTheme: SwitchThemeData(
           thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.textPrimary : AppColors.textMuted),
           trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.primary : AppColors.borderDefault),
@@ -270,6 +432,108 @@ class AppTheme {
         tooltipTheme: TooltipThemeData(
           decoration: BoxDecoration(color: AppColors.surfaceActive, borderRadius: AppRadius.cardSmBR),
           textStyle: AppTextStyles.labelSmall,
+        ),
+      );
+
+  // ── Light Theme ────────────────────────────────────────────────────────
+  static const _lightColorScheme = ColorScheme(
+    brightness: Brightness.light,
+    primary: AppColors.primary,
+    onPrimary: Color(0xFFF0F0FF),
+    primaryContainer: Color(0xFFD8D6FF),
+    onPrimaryContainer: Color(0xFF1A1050),
+    secondary: AppColors.primaryLight,
+    onSecondary: Color(0xFF161531),
+    secondaryContainer: Color(0xFFEAEAFF),
+    onSecondaryContainer: Color(0xFF1A1A2E),
+    tertiary: AppColors.cbSkyBlue,
+    onTertiary: Color(0xFF1A1A2E),
+    error: AppColors.error,
+    onError: Color(0xFFF0F0FF),
+    surface: Color(0xFFF0F0FA),
+    onSurface: Color(0xFF1A1A2E),
+    onSurfaceVariant: Color(0xFF8080A0),
+    outline: Color(0xFFE0E0F0),
+    outlineVariant: Color(0xFFB0A8FF),
+    shadow: Colors.black,
+    scrim: Colors.black,
+    inverseSurface: Color(0xFF1A1A2E),
+    onInverseSurface: Color(0xFFF5F5FF),
+    inversePrimary: AppColors.primaryDark,
+  );
+
+  static ThemeData get lightTheme => ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: _lightColorScheme,
+        scaffoldBackgroundColor: const Color(0xFFF5F5FF),
+        extensions: const <ThemeExtension<dynamic>>[
+          AppThemeColors.light,
+        ],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFF5F5FF),
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          centerTitle: false,
+          iconTheme: IconThemeData(color: Color(0xFF1A1A2E), size: AppIconSize.nav),
+        ),
+        textTheme: TextTheme(
+          displayLarge: GoogleFonts.plusJakartaSans(fontSize: 32, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A2E)),
+          headlineLarge: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A2E), height: 32 / 24),
+          headlineMedium: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A2E)),
+          headlineSmall: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A2E), height: 22 / 17),
+          titleLarge: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700, color: const Color(0xFF1A1A2E)),
+          titleMedium: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF1A1A2E)),
+          titleSmall: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w600, color: const Color(0xFF3A3A5C)),
+          bodyLarge: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w400, color: const Color(0xFF8080A0), height: 1.5),
+          bodyMedium: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w400, color: const Color(0xFF8080A0), height: 19 / 12),
+          bodySmall: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w400, color: const Color(0xFF8080A0), height: 17 / 11),
+          labelLarge: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w700, color: const Color(0xFF1A1A2E)),
+          labelMedium: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.primary, letterSpacing: 1.0),
+          labelSmall: GoogleFonts.plusJakartaSans(fontSize: 10, fontWeight: FontWeight.w400, color: const Color(0xFF8080A0)),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: const Color(0xFFF0F0FF),
+            minimumSize: const Size.fromHeight(46),
+            shape: RoundedRectangleBorder(borderRadius: AppRadius.buttonBR),
+            elevation: 0,
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: const Color(0xFFEAEAFF),
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md3, vertical: AppSpacing.md2),
+          border: OutlineInputBorder(borderRadius: AppRadius.cardMdBR, borderSide: const BorderSide(color: Color(0xFF6C63FF), width: 1.5)),
+          enabledBorder: OutlineInputBorder(borderRadius: AppRadius.cardMdBR, borderSide: const BorderSide(color: Color(0xFFB0A8FF), width: 1.5)),
+          focusedBorder: OutlineInputBorder(borderRadius: AppRadius.cardMdBR, borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+          hintStyle: GoogleFonts.plusJakartaSans(fontSize: 12, color: const Color(0xFF8080A0)),
+          labelStyle: GoogleFonts.plusJakartaSans(fontSize: 10, color: AppColors.primary),
+        ),
+        cardTheme: CardThemeData(
+          color: const Color(0xFFFFFFFF),
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.cardMdBR, side: const BorderSide(color: Color(0xFFE0E0F0), width: 1.5)),
+          margin: EdgeInsets.zero,
+        ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Colors.white : Colors.grey.shade400),
+          trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.primary : const Color(0xFFD0D0E0)),
+        ),
+        dividerTheme: const DividerThemeData(color: Color(0xFFE0E0F0), thickness: 1, space: 0),
+        iconTheme: const IconThemeData(color: AppColors.primary, size: AppIconSize.card),
+        dialogTheme: DialogThemeData(
+          backgroundColor: const Color(0xFFFFFFFF),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.xxl)),
+          titleTextStyle: GoogleFonts.plusJakartaSans(fontSize: 17, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A2E)),
+          contentTextStyle: GoogleFonts.plusJakartaSans(fontSize: 12, color: const Color(0xFF8080A0)),
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color(0xFFFFFFFF),
+          modalBackgroundColor: Color(0xFFFFFFFF),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppSpacing.xxl))),
+          elevation: 0,
         ),
       );
 }

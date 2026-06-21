@@ -36,7 +36,7 @@ class StepIndicator extends StatelessWidget {
               final stepIndex = i + 1;
               final isCurrent = stepIndex == currentStep;
               
-              return _buildStep(stepIndex, isCurrent);
+              return _buildStep(context, stepIndex, isCurrent);
             }),
           ),
         ],
@@ -54,7 +54,7 @@ class StepIndicator extends StatelessWidget {
     }
   }
 
-  Widget _buildStep(int stepIndex, bool isCurrent) {
+  Widget _buildStep(BuildContext context, int stepIndex, bool isCurrent) {
     return Container(
       height: 22,
       width: isCurrent ? 118 : 23,
@@ -65,7 +65,7 @@ class StepIndicator extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         isCurrent ? _getStepTitle(stepIndex) : '$stepIndex',
-        style: AppTextStyles.labelXSmall.copyWith(
+        style: context.textStyles.labelXSmall.copyWith(
           color: isCurrent ? AppColors.textOnPrimary : AppColors.textLabel,
         ),
       ),

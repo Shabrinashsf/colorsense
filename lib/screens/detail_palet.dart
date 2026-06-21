@@ -31,7 +31,6 @@ class DetailPaletScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
@@ -47,15 +46,19 @@ class DetailPaletScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: SvgPicture.asset(
-                      'assets/icons/ic_arrow_left_circle.svg',
-                      width: 24,
-                      height: 24,
-                    ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                   ),
                   const SizedBox(width: 10),
                   Text(
                     'Detail Palet',
-                    style: AppTextStyles.headlineMedium.copyWith(
+                    style: context.textStyles.headlineMedium.copyWith(
                       fontSize: 13,
                     ),
                   ),
@@ -66,15 +69,15 @@ class DetailPaletScreen extends StatelessWidget {
               // ── Title & Subtitle ───────────────────────────────────
               Text(
                 'Okabe-Ito Palette',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   fontSize: 16,
                 ),
               ),
               const SizedBox(height: 3),
               Text(
                 'Untuk semua tipe buta warna · 8 warna', // Text from Figma
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: const Color(0xFFAFADDF),
+                style: context.textStyles.bodySmall.copyWith(
+                  color: context.colors.textMuted,
                   fontSize: 9,
                 ),
               ),
@@ -110,8 +113,8 @@ class DetailPaletScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Container(
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceSecondary,
-                      border: Border.all(color: const Color(0xFF1E1E30)),
+                      color: context.colors.surfaceSecondary,
+                      border: Border.all(color: context.colors.borderDefault),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
@@ -128,8 +131,8 @@ class DetailPaletScreen extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           hexCodes[index],
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: const Color(0xFFAFADDF),
+                          style: context.textStyles.bodySmall.copyWith(
+                            color: context.colors.textMuted,
                             fontSize: 8,
                           ),
                         ),
@@ -143,8 +146,8 @@ class DetailPaletScreen extends StatelessWidget {
               // ── Kompatibilitas ─────────────────────────────────────
               Text(
                 'KOMPATIBILITAS BUTA WARNA',
-                style: AppTextStyles.labelXSmall.copyWith(
-                  color: const Color(0xFF9D97FF),
+                style: context.textStyles.labelXSmall.copyWith(
+                  color: context.colors.textLabel,
                   letterSpacing: 0.8,
                   fontSize: 8,
                 ),
@@ -153,17 +156,17 @@ class DetailPaletScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceSecondary,
-                  border: Border.all(color: const Color(0xFF1E1E30)),
+                  color: context.colors.surfaceSecondary,
+                  border: Border.all(color: context.colors.borderDefault),
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: Column(
                   children: [
-                    _buildCompatRow('Deuteranopia / Protanopia', 'AMAN', true),
-                    const SizedBox(height: 8),
-                    _buildCompatRow('Tritanopia', 'AMAN', true),
-                    const SizedBox(height: 8),
-                    _buildCompatRow('Achromatopsia', 'TERBATAS', false),
+                    _buildCompatRow(context, 'Deuteranopia / Protanopia', 'AMAN', true),
+                    const SizedBox(height: 4),
+                    _buildCompatRow(context, 'Tritanopia', 'AMAN', true),
+                    const SizedBox(height: 4),
+                    _buildCompatRow(context, 'Achromatopsia', 'TERBATAS', false),
                   ],
                 ),
               ),
@@ -174,14 +177,14 @@ class DetailPaletScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCompatRow(String title, String status, bool isAman) {
+  Widget _buildCompatRow(BuildContext context, String title, String status, bool isAman) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: const Color(0xFFAFADDF),
+          style: context.textStyles.bodySmall.copyWith(
+            color: context.colors.textMuted,
             fontSize: 9,
           ),
         ),
@@ -197,7 +200,7 @@ class DetailPaletScreen extends StatelessWidget {
           ),
           child: Text(
             status,
-            style: AppTextStyles.labelSmall.copyWith(
+            style: context.textStyles.labelSmall.copyWith(
               color: isAman ? const Color(0xFF00D9A3) : const Color(0xFFFFC663),
               fontSize: 8,
             ),

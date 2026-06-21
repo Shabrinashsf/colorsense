@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/home_dashboard_on.dart';
@@ -7,29 +8,104 @@ import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/palet_warna.dart';
 import 'package:colorsense/screens/tersimpan.dart';
 import 'package:colorsense/screens/filter_mode.dart';
-import 'package:colorsense/screens/settings_light_mode.dart';
 import 'package:colorsense/screens/ukuran_teks.dart';
 import 'package:colorsense/screens/keparahan_settings.dart';
+import 'package:colorsense/providers/theme_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 18 - Pengaturan | Figma node: 12:311
 // -----------------------------------------------------------------------------
 
-class PengaturanScreen extends StatefulWidget {
+class PengaturanScreen extends ConsumerStatefulWidget {
   const PengaturanScreen({super.key});
 
   @override
-  State<PengaturanScreen> createState() => _PengaturanScreenState();
+  ConsumerState<PengaturanScreen> createState() => _PengaturanScreenState();
 }
 
-class _PengaturanScreenState extends State<PengaturanScreen> {
+class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
   bool _isLabelWarnaOtomatisOn = true;
   bool _isTTSOn = false;
 
+  void _showThemeSelector() {
+    final currentMode = ref.read(themeModeProvider);
+    final colors = context.colors;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: colors.surfaceSecondary,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Handle bar
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: colors.borderDefault,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Pilih Tema',
+                style: context.textStyles.headlineMedium.copyWith(
+                  fontSize: 14,
+                  color: colors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Tema berlaku untuk seluruh aplikasi.',
+                style: context.textStyles.bodySmall.copyWith(
+                  color: colors.textMuted,
+                  fontSize: 9,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _ThemeOption(
+                label: 'Tema Gelap',
+                icon: Icons.dark_mode_rounded,
+                isSelected: currentMode == ThemeMode.dark,
+                onTap: () {
+                  ref.read(themeModeProvider.notifier).setDark();
+                  Navigator.pop(ctx);
+                },
+              ),
+              const SizedBox(height: 8),
+              _ThemeOption(
+                label: 'Tema Terang',
+                icon: Icons.light_mode_rounded,
+                isSelected: currentMode == ThemeMode.light,
+                onTap: () {
+                  ref.read(themeModeProvider.notifier).setLight();
+                  Navigator.pop(ctx);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final themeMode = ref.watch(themeModeProvider);
+    final themeLabel = themeMode == ThemeMode.light ? 'Terang' : 'Gelap';
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
+      backgroundColor: colors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -45,8 +121,9 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                     // ── Header ─────────────────────────────────────────────
                     Text(
                       'Pengaturan',
-                      style: AppTextStyles.headlineLarge.copyWith(
+                      style: context.textStyles.headlineLarge.copyWith(
                         fontSize: 17,
+                        color: colors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -55,8 +132,8 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: colors.surfaceSecondary,
+                        border: Border.all(color: colors.borderDefault),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -65,6 +142,7 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                             'assets/icons/ic_profile_circle.svg',
                             width: 30,
                             height: 30,
+                            colorFilter: ColorFilter.mode(context.colors.textPrimary, BlendMode.srcIn),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -73,15 +151,16 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                               children: [
                                 Text(
                                   'Ama',
-                                  style: AppTextStyles.headlineMedium.copyWith(
+                                  style: context.textStyles.headlineMedium.copyWith(
                                     fontSize: 12,
+                                    color: colors.textPrimary,
                                   ),
                                 ),
                                 const SizedBox(height: 1),
                                 Text(
                                   'Bio',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: const Color(0xFFAFADDF),
+                                  style: context.textStyles.bodySmall.copyWith(
+                                    color: colors.textMuted,
                                     fontSize: 9,
                                   ),
                                 ),
@@ -90,8 +169,8 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                           ),
                           Text(
                             'Edit',
-                            style: AppTextStyles.labelMedium.copyWith(
-                              color: const Color(0xFF6C63FF),
+                            style: context.textStyles.labelMedium.copyWith(
+                              color: AppColors.primary,
                               fontSize: 9,
                             ),
                           ),
@@ -101,11 +180,11 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                     const SizedBox(height: 15),
 
                     // ── Aksesibilitas ──────────────────────────────────────
-                    _buildSectionTitle('AKSESIBILITAS'),
+                    _buildSectionTitle('AKSESIBILITAS', colors),
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: colors.surfaceSecondary,
+                        border: Border.all(color: colors.borderDefault),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -113,6 +192,7 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                           _buildMenuItem(
                             title: 'Tipe Buta Warna',
                             trailingText: 'Deuteranopia - Sedang',
+                            colors: colors,
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -122,10 +202,11 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                               );
                             },
                           ),
-                          _buildDivider(),
+                          _buildDivider(colors),
                           _buildMenuItem(
                             title: 'Mode Filter',
                             trailingText: 'Default - Dark Accent',
+                            colors: colors,
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -135,20 +216,22 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                               );
                             },
                           ),
-                          _buildDivider(),
+                          _buildDivider(colors),
                           _buildSwitchItem(
                             title: 'Label Warna Otomatis',
                             value: _isLabelWarnaOtomatisOn,
+                            colors: colors,
                             onChanged: (val) {
                               setState(() {
                                 _isLabelWarnaOtomatisOn = val;
                               });
                             },
                           ),
-                          _buildDivider(),
+                          _buildDivider(colors),
                           _buildSwitchItem(
                             title: 'Text-to-Speech (TTS)',
                             value: _isTTSOn,
+                            colors: colors,
                             onChanged: (val) {
                               setState(() {
                                 _isTTSOn = val;
@@ -161,31 +244,27 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                     const SizedBox(height: 15),
 
                     // ── Tampilan ───────────────────────────────────────────
-                    _buildSectionTitle('TAMPILAN'),
+                    _buildSectionTitle('TAMPILAN', colors),
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: colors.surfaceSecondary,
+                        border: Border.all(color: colors.borderDefault),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
                         children: [
-                          _buildMenuIconItem(
+                          // Tema – shows bottom sheet to pick Dark/Light
+                          _buildMenuItem(
                             title: 'Tema',
-                            iconPath: 'assets/icons/ic_moon.svg', // Assumed moon icon path
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SettingsLightModeScreen(),
-                                ),
-                              );
-                            },
+                            trailingText: themeLabel,
+                            colors: colors,
+                            onTap: _showThemeSelector,
                           ),
-                          _buildDivider(),
+                          _buildDivider(colors),
                           _buildMenuItem(
                             title: 'Ukuran Teks',
                             trailingText: 'Normal',
+                            colors: colors,
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -201,16 +280,17 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                     const SizedBox(height: 15),
 
                     // ── Lainnya ────────────────────────────────────────────
-                    _buildSectionTitle('LAINNYA'),
+                    _buildSectionTitle('LAINNYA', colors),
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: colors.surfaceSecondary,
+                        border: Border.all(color: colors.borderDefault),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: _buildMenuItem(
                         title: 'Tentang ColorSense',
                         trailingText: 'v1.0',
+                        colors: colors,
                         onTap: () {},
                       ),
                     ),
@@ -221,36 +301,28 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
 
             // ── Bottom Navbar ──────────────────────────────────────────────
             BottomNavbar(
-              currentIndex: 4, // Setting is index 4
+              currentIndex: 4,
               onTap: (index) {
                 if (index == 0) {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeDashboardOnScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const HomeDashboardOnScreen()),
                     (route) => false,
                   );
                 } else if (index == 1) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const PaletWarnaScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const PaletWarnaScreen()),
                   );
                 } else if (index == 2) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const ColorIdentifierScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const ColorIdentifierScreen()),
                   );
                 } else if (index == 3) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const TersimpanScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const TersimpanScreen()),
                   );
                 }
               },
@@ -261,13 +333,13 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, AppThemeColors colors) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5),
       child: Text(
         title,
-        style: AppTextStyles.labelMedium.copyWith(
-          color: const Color(0xFF9D97FF),
+        style: context.textStyles.labelMedium.copyWith(
+          color: colors.sectionTitle,
           fontSize: 8,
           letterSpacing: 1,
         ),
@@ -275,11 +347,11 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
     );
   }
 
-  Widget _buildDivider() {
-    return const Divider(
+  Widget _buildDivider(AppThemeColors colors) {
+    return Divider(
       height: 1,
       thickness: 1,
-      color: Color(0xFF1E1E30),
+      color: colors.borderDefault,
       indent: 10,
       endIndent: 10,
     );
@@ -288,6 +360,7 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
   Widget _buildMenuItem({
     required String title,
     required String trailingText,
+    required AppThemeColors colors,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -300,50 +373,16 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
           children: [
             Text(
               title,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: const Color(0xFFD0D0F0),
+              style: context.textStyles.bodySmall.copyWith(
+                color: colors.textSecondary,
                 fontSize: 10,
               ),
             ),
             Text(
               trailingText,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: const Color(0xFFAFADDF),
+              style: context.textStyles.bodySmall.copyWith(
+                color: colors.textMuted,
                 fontSize: 9,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuIconItem({
-    required String title,
-    required String iconPath,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: const Color(0xFFD0D0F0),
-                fontSize: 10,
-              ),
-            ),
-            SvgPicture.asset(
-              iconPath,
-              width: 14,
-              colorFilter: const ColorFilter.mode(
-                Color(0xFF6C63FF), // moon icon color logic based on figma (vector color #6c63ff in design maybe? let's use primary)
-                BlendMode.srcIn,
               ),
             ),
           ],
@@ -355,6 +394,7 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
   Widget _buildSwitchItem({
     required String title,
     required bool value,
+    required AppThemeColors colors,
     required ValueChanged<bool> onChanged,
   }) {
     return Padding(
@@ -364,8 +404,8 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
         children: [
           Text(
             title,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: const Color(0xFFD0D0F0),
+            style: context.textStyles.bodySmall.copyWith(
+              color: colors.textSecondary,
               fontSize: 10,
             ),
           ),
@@ -378,13 +418,66 @@ class _PengaturanScreenState extends State<PengaturanScreen> {
                 value: value,
                 onChanged: onChanged,
                 activeThumbColor: Colors.white,
-                activeTrackColor: const Color(0xFF6C63FF),
+                activeTrackColor: AppColors.primary,
                 inactiveThumbColor: Colors.white,
-                inactiveTrackColor: const Color(0xFF1E1E30),
+                inactiveTrackColor: colors.borderDefault,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Theme Option tile (used inside bottom sheet) ──────────────────────────
+class _ThemeOption extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ThemeOption({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary.withValues(alpha: 0.12) : colors.surfacePrimary,
+          border: Border.all(
+            color: isSelected ? AppColors.primary : colors.borderDefault,
+            width: isSelected ? 1.5 : 1,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: isSelected ? AppColors.primary : colors.textMuted, size: 18),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: context.textStyles.bodySmall.copyWith(
+                  color: isSelected ? AppColors.primary : colors.textSecondary,
+                  fontSize: 11,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 18),
+          ],
+        ),
       ),
     );
   }

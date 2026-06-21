@@ -177,9 +177,9 @@ class _FallbackLogo extends StatelessWidget {
         color: AppColors.primaryDark,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Icon(
+      child: Icon(
         Icons.remove_red_eye_outlined,
-        color: AppColors.textPrimary,
+        color: context.colors.textPrimary,
         size: 32,
       ),
     );
@@ -198,7 +198,7 @@ class _TitleGroup extends StatelessWidget {
         // 32px ExtraBold
         Text(
           'ColorSense',
-          style: AppTextStyles.displayLarge,
+          style: context.textStyles.displayLarge,
         ),
         const SizedBox(height: 5),
         // 12px Regular, lineHeight 19px, center
@@ -207,10 +207,10 @@ class _TitleGroup extends StatelessWidget {
           child: Text(
             'Membantu kamu memahami warna di sekitarmu',
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: context.textStyles.bodyMedium.copyWith(
               fontSize: 12,
               height: 19 / 12,
-              color: AppColors.textMuted,
+              color: context.colors.textMuted,
             ),
           ),
         ),
@@ -257,7 +257,7 @@ class _LoadingSection extends StatelessWidget {
                   // Percentage text centered
                   Text(
                     '$percent%',
-                    style: AppTextStyles.progressLabel,
+                    style: context.textStyles.progressLabel,
                   ),
                 ],
               ),
@@ -268,7 +268,7 @@ class _LoadingSection extends StatelessWidget {
             // "Memuat warna..."
             Text(
               'Memuat warna...',
-              style: AppTextStyles.loadingText,
+              style: context.textStyles.loadingText,
             ),
           ],
         );

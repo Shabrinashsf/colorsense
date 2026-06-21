@@ -5,6 +5,7 @@ import 'package:colorsense/screens/home_dashboard_on.dart';
 import 'package:colorsense/screens/palet_warna.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
+import 'package:colorsense/screens/pengaturan.dart';
 
 // -----------------------------------------------------------------------------
 // 17 - Tersimpan | Figma node: 12:258
@@ -30,7 +31,6 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -48,7 +48,7 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                     ),
                     child: Text(
                       'Tersimpan',
-                      style: AppTextStyles.headlineLarge.copyWith(
+                      style: context.textStyles.headlineLarge.copyWith(
                         fontSize: 17,
                       ),
                     ),
@@ -84,7 +84,7 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                             ),
                             child: Text(
                               'Favorit',
-                              style: AppTextStyles.labelMedium.copyWith(
+                              style: context.textStyles.labelMedium.copyWith(
                                 color: _isFavoritActive
                                     ? const Color(0xFF9D97FF)
                                     : const Color(0xFFAFADDF),
@@ -99,7 +99,7 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                           width: 1,
                           height: 22,
                           margin: const EdgeInsets.symmetric(horizontal: 10),
-                          color: const Color(0xFF1E1E30),
+                          color: context.colors.borderDefault,
                         ),
 
                         // Time Filters
@@ -134,7 +134,7 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                                     ),
                                     child: Text(
                                       _filters[index],
-                                      style: AppTextStyles.labelMedium.copyWith(
+                                      style: context.textStyles.labelMedium.copyWith(
                                         color: isSelected
                                             ? const Color(0xFF9D97FF)
                                             : const Color(0xFFAFADDF),
@@ -230,8 +230,14 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                       builder: (context) => const ColorIdentifierScreen(),
                     ),
                   );
+                } else if (index == 4) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PengaturanScreen(),
+                    ),
+                  );
                 }
-                // (index == 4 for Setting will be added later)
               },
             ),
           ],
@@ -260,8 +266,8 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
         height: 50,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: AppColors.surfaceSecondary,
-          border: Border.all(color: const Color(0xFF1E1E30)),
+          color: context.colors.surfaceSecondary,
+          border: Border.all(color: context.colors.borderDefault),
           borderRadius: BorderRadius.circular(11),
         ),
         child: Row(
@@ -282,16 +288,16 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.headlineMedium.copyWith(
-                      color: const Color(0xFFD0D0F0),
+                    style: context.textStyles.headlineMedium.copyWith(
+                      color: context.colors.textSecondary,
                       fontSize: 11,
                     ),
                   ),
                   const SizedBox(height: 3),
                   Text(
                     hexCode,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: const Color(0xFFAFADDF),
+                    style: context.textStyles.bodySmall.copyWith(
+                      color: context.colors.textMuted,
                       fontSize: 9,
                     ),
                   ),
@@ -306,8 +312,8 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                   children: [
                     Text(
                       time,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: const Color(0xFFAFADDF),
+                      style: context.textStyles.bodySmall.copyWith(
+                        color: context.colors.textMuted,
                         fontSize: 9,
                       ),
                     ),

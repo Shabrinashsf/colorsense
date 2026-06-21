@@ -19,7 +19,6 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -38,10 +37,14 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
                           child: SvgPicture.asset(
-                            'assets/icons/ic_arrow_left_circle.svg',
-                            width: 24,
-                            height: 24,
-                          ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -50,14 +53,14 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                             children: [
                               Text(
                                 'Tipe Buta Warna',
-                                style: AppTextStyles.headlineMedium.copyWith(
+                                style: context.textStyles.headlineMedium.copyWith(
                                   fontSize: 13,
                                 ),
                               ),
                               Text(
                                 'Pilih tipe buta warna sesuai dengan kondisimu.',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: const Color(0xFFAFADDF),
+                                style: context.textStyles.bodySmall.copyWith(
+                                  color: context.colors.textMuted,
                                   fontSize: 9,
                                 ),
                               ),
@@ -73,8 +76,8 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30), width: 1.5),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault, width: 1.5),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -99,16 +102,16 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                               children: [
                                 Text(
                                   'Deuteranopia / Protanopia',
-                                  style: AppTextStyles.headlineMedium.copyWith(
-                                    color: const Color(0xFFD0D0F0),
+                                  style: context.textStyles.headlineMedium.copyWith(
+                                    color: context.colors.textSecondary,
                                     fontSize: 11,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
                                   'Sulit membedakan Merah & Hijau',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: const Color(0xFFAFADDF),
+                                  style: context.textStyles.bodySmall.copyWith(
+                                    color: context.colors.textMuted,
                                     fontSize: 9,
                                   ),
                                 ),
@@ -117,7 +120,7 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                           ),
                           Text(
                             'Tes Ulang',
-                            style: AppTextStyles.labelMedium.copyWith(
+                            style: context.textStyles.labelMedium.copyWith(
                               color: const Color(0xFF6C63FF),
                               fontSize: 9,
                             ),
@@ -144,8 +147,8 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                               const SizedBox(height: 4),
                               Text(
                                 'MERAH',
-                                style: AppTextStyles.headlineMedium.copyWith(
-                                  color: Colors.white.withValues(alpha: 0.8),
+                                style: context.textStyles.headlineMedium.copyWith(
+                                  color: context.colors.textMuted,
                                   fontSize: 8,
                                 ),
                               ),
@@ -166,8 +169,8 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                               const SizedBox(height: 4),
                               Text(
                                 'HIJAU',
-                                style: AppTextStyles.headlineMedium.copyWith(
-                                  color: Colors.white.withValues(alpha: 0.8),
+                                style: context.textStyles.headlineMedium.copyWith(
+                                  color: context.colors.textMuted,
                                   fontSize: 8,
                                 ),
                               ),
@@ -235,8 +238,8 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
                   alignment: Alignment.center,
                   child: Text(
                     'Simpan Perubahan',
-                    style: AppTextStyles.labelLarge.copyWith(
-                      color: const Color(0xFFF0F0FF),
+                    style: context.textStyles.labelLarge.copyWith(
+                      color: context.colors.textPrimary,
                       fontSize: 12,
                     ),
                   ),
@@ -254,8 +257,8 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
       padding: const EdgeInsets.only(bottom: 5),
       child: Text(
         title,
-        style: AppTextStyles.labelMedium.copyWith(
-          color: const Color(0xFF9D97FF),
+        style: context.textStyles.labelMedium.copyWith(
+          color: context.colors.textLabel,
           fontSize: 8,
           letterSpacing: 1,
         ),
@@ -280,7 +283,7 @@ class _KeparahanSettingsScreenState extends State<KeparahanSettingsScreen> {
             Expanded(
               child: Text(
                 title,
-                style: AppTextStyles.headlineMedium.copyWith(
+                style: context.textStyles.headlineMedium.copyWith(
                   color: titleColor,
                   fontSize: 8,
                   letterSpacing: 0.3,

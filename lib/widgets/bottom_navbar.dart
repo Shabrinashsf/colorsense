@@ -14,12 +14,13 @@ class BottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundPrimary,
+        color: colors.navbarBg,
         border: Border(
           top: BorderSide(
-            color: const Color(0xFF9D97FF).withValues(alpha: 0.5), // AppColors.primaryLight maybe
+            color: colors.navbarBorder.withValues(alpha: 0.5),
             width: 1.5,
           ),
         ),
@@ -28,49 +29,28 @@ class BottomNavbar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildNavItem(
-            index: 0,
-            iconPath: 'assets/icons/ic_home2.svg',
-            label: 'Home',
-          ),
-          _buildNavItem(
-            index: 1,
-            iconPath: 'assets/icons/ic_bubble.svg',
-            label: 'Palet',
-          ),
-          _buildNavItem(
-            index: 2,
-            iconPath: 'assets/icons/ic_instagram.svg',
-            label: 'Kamera',
-          ),
-          _buildNavItem(
-            index: 3,
-            iconPath: 'assets/icons/ic_archive_minus.svg',
-            label: 'Simpan',
-          ),
-          _buildNavItem(
-            index: 4,
-            iconPath: 'assets/icons/ic_setting2.svg',
-            label: 'Setting',
-          ),
+          _buildNavItem(context, index: 0, iconPath: 'assets/icons/ic_home2.svg', label: 'Home'),
+          _buildNavItem(context, index: 1, iconPath: 'assets/icons/ic_bubble.svg', label: 'Palet'),
+          _buildNavItem(context, index: 2, iconPath: 'assets/icons/ic_instagram.svg', label: 'Kamera'),
+          _buildNavItem(context, index: 3, iconPath: 'assets/icons/ic_archive_minus.svg', label: 'Simpan'),
+          _buildNavItem(context, index: 4, iconPath: 'assets/icons/ic_setting2.svg', label: 'Setting'),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem({
+  Widget _buildNavItem(BuildContext context, {
     required int index,
     required String iconPath,
     required String label,
   }) {
+    final colors = context.colors;
     final isActive = currentIndex == index;
-    final color = isActive ? AppColors.primary : Colors.white;
+    final color = isActive ? AppColors.primary : colors.navInactive;
 
     return GestureDetector(
       onTap: () {
-        if (onTap != null) {
-          onTap!(index);
-        }
+        if (onTap != null) onTap!(index);
       },
       behavior: HitTestBehavior.opaque,
       child: Column(
@@ -84,7 +64,7 @@ class BottomNavbar extends StatelessWidget {
           const SizedBox(height: 3),
           Text(
             label,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.textStyles.bodySmall.copyWith(
               fontSize: 10,
               color: color,
             ),

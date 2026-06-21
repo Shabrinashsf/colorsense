@@ -28,7 +28,6 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
@@ -44,15 +43,19 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: SvgPicture.asset(
-                      'assets/icons/ic_arrow_left_circle.svg',
-                      width: 24,
-                      height: 24,
-                    ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                   ),
                   const SizedBox(width: 10),
                   Text(
                     'Contrast Checker',
-                    style: AppTextStyles.headlineMedium.copyWith(
+                    style: context.textStyles.headlineMedium.copyWith(
                       fontSize: 13,
                     ),
                   ),
@@ -73,7 +76,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                       ),
                       child: Text(
                         'Aa',
-                        style: AppTextStyles.headlineLarge.copyWith(
+                        style: context.textStyles.headlineLarge.copyWith(
                           color: _leftColor,
                           fontSize: 24,
                         ),
@@ -91,7 +94,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                       ),
                       child: Text(
                         'Aa',
-                        style: AppTextStyles.headlineLarge.copyWith(
+                        style: context.textStyles.headlineLarge.copyWith(
                           color: _rightColor,
                           fontSize: 24,
                         ),
@@ -151,8 +154,8 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   ),
                   child: Text(
                     'Cek Kontras',
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: const Color(0xFFF0F0FF),
+                    style: context.textStyles.labelMedium.copyWith(
+                      color: context.colors.textPrimary,
                       fontSize: 12,
                     ),
                   ),
@@ -164,8 +167,8 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
               if (_showResult) ...[
                 Text(
                   'HASIL PENGECEKAN KONTRAS',
-                  style: AppTextStyles.labelXSmall.copyWith(
-                    color: const Color(0xFF9D97FF),
+                  style: context.textStyles.labelXSmall.copyWith(
+                    color: context.colors.textLabel,
                     fontSize: 8,
                   ),
                 ),
@@ -173,8 +176,8 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceSecondary,
-                    border: Border.all(color: const Color(0xFF1E1E30)),
+                    color: context.colors.surfaceSecondary,
+                    border: Border.all(color: context.colors.borderDefault),
                     borderRadius: BorderRadius.circular(11),
                   ),
                   child: Column(
@@ -182,15 +185,15 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                       // Rasio
                       Text(
                         '5.8:1',
-                        style: AppTextStyles.headlineLarge.copyWith(
+                        style: context.textStyles.headlineLarge.copyWith(
                           fontSize: 28,
                         ),
                       ),
                       Text(
                         'Rasio Kontras',
-                        style: AppTextStyles.bodySmall.copyWith(
+                        style: context.textStyles.bodySmall.copyWith(
                           fontSize: 9,
-                          color: Colors.white,
+                          color: context.colors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -221,8 +224,8 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceSecondary,
-        border: Border.all(color: const Color(0xFF1E1E30)),
+        color: context.colors.surfaceSecondary,
+        border: Border.all(color: context.colors.borderDefault),
         borderRadius: BorderRadius.circular(9),
       ),
       child: Column(
@@ -240,7 +243,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _buildDynamicInputAction(currentMode, hexText),
+                child: _buildDynamicInputAction(context, currentMode, hexText),
               ),
             ],
           ),
@@ -275,14 +278,14 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
     );
   }
 
-  Widget _buildDynamicInputAction(InputMode mode, String hexText) {
+  Widget _buildDynamicInputAction(BuildContext context, InputMode mode, String hexText) {
     if (mode == InputMode.type) {
       return SizedBox(
         height: 20,
         child: TextField(
           controller: TextEditingController(text: hexText),
-          style: AppTextStyles.bodySmall.copyWith(
-            color: const Color(0xFFAFADDF),
+          style: context.textStyles.bodySmall.copyWith(
+            color: context.colors.textMuted,
             fontSize: 9,
           ),
           decoration: const InputDecoration(
@@ -304,7 +307,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
         },
         child: Text(
           'Buka Kamera',
-          style: AppTextStyles.labelSmall.copyWith(
+          style: context.textStyles.labelSmall.copyWith(
             color: const Color(0xFF00D9A3),
             fontSize: 9,
             decoration: TextDecoration.underline,
@@ -318,11 +321,11 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              backgroundColor: AppColors.surfaceSecondary,
-              title: Text('Color Picker', style: AppTextStyles.headlineMedium),
+              backgroundColor: context.colors.surfaceSecondary,
+              title: Text('Color Picker', style: context.textStyles.headlineMedium),
               content: Text(
                 'Pop-up Color Picker akan muncul di sini.',
-                style: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+                style: context.textStyles.bodySmall.copyWith(color: context.colors.textPrimary),
               ),
               actions: [
                 TextButton(
@@ -335,7 +338,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
         },
         child: Text(
           'Pilih Warna',
-          style: AppTextStyles.labelSmall.copyWith(
+          style: context.textStyles.labelSmall.copyWith(
             color: const Color(0xFFFFC663),
             fontSize: 9,
             decoration: TextDecoration.underline,
@@ -362,7 +365,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
         ),
         child: Text(
           label,
-          style: AppTextStyles.bodySmall.copyWith(
+          style: context.textStyles.bodySmall.copyWith(
             color: isActive ? activeColor : const Color(0xFF606080),
             fontSize: 8,
           ),
@@ -377,8 +380,8 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
       children: [
         Text(
           label,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: const Color(0xFFAFADDF),
+          style: context.textStyles.bodySmall.copyWith(
+            color: context.colors.textMuted,
             fontSize: 9,
           ),
         ),
@@ -392,7 +395,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
           ),
           child: Text(
             isPass ? 'KONTRAS' : 'KONTRAS RENDAH',
-            style: AppTextStyles.labelSmall.copyWith(
+            style: context.textStyles.labelSmall.copyWith(
               color: isPass ? const Color(0xFF00D9A3) : const Color(0xFFFF8080),
               fontSize: 8,
             ),

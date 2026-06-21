@@ -24,7 +24,6 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -46,7 +45,7 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
               // ── Headline ─────────────────────────────────────────────
               Text(
                 'Atur fitur\ndefaultmu',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   height: 30 / 24,
                 ),
               ),
@@ -56,7 +55,7 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
               // ── Sub-headline ─────────────────────────────────────────
               Text(
                 'Fitur bisa diubah di Settings kapanpun.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   fontSize: 11,
                   height: 17 / 11,
                 ),
@@ -183,16 +182,16 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: const Color(0xFFD0D0F0),
+                  style: context.textStyles.labelSmall.copyWith(
+                    color: context.colors.textSecondary,
                     fontSize: 11,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: const Color(0xFFAFADDF),
+                  style: context.textStyles.bodySmall.copyWith(
+                    color: context.colors.textMuted,
                     fontSize: 9,
                   ),
                 ),

@@ -27,7 +27,6 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -44,15 +43,16 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                     Row(
                       children: [
                         SvgPicture.asset(
-                          'assets/icons/ic_profile_circle.svg',
-                          width: 30,
-                          height: 30,
-                        ),
+                            'assets/icons/ic_profile_circle.svg',
+                            width: 30,
+                            height: 30,
+                            colorFilter: ColorFilter.mode(context.colors.textPrimary, BlendMode.srcIn),
+                          ),
                         const SizedBox(width: 10),
                         Text(
                           'Ama',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: const Color(0xFFD0D0F0),
+                          style: context.textStyles.bodyMedium.copyWith(
+                            color: context.colors.textSecondary,
                             fontSize: 11,
                           ),
                         ),
@@ -64,7 +64,7 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                     // ── Headline ───────────────────────────────────────────
                     Text(
                       'Apa yang ingin kamu kenali?',
-                      style: AppTextStyles.headlineLarge.copyWith(
+                      style: context.textStyles.headlineLarge.copyWith(
                         fontSize: 17,
                         height: 22 / 17,
                       ),
@@ -158,8 +158,8 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                     // ── Terakhir Diidentifikasi ────────────────────────────
                     Text(
                       'TERAKHIR DIIDENTIFIKASI',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         letterSpacing: 1,
                         fontSize: 8,
                       ),
@@ -279,8 +279,8 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.labelXSmall.copyWith(
-                      color: Colors.white.withValues(alpha: 0.75),
+                    style: context.textStyles.labelXSmall.copyWith(
+                      color: context.colors.textMuted,
                       fontSize: 8,
                     ),
                     maxLines: 1,
@@ -289,8 +289,8 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
                   const SizedBox(height: 3),
                   Text(
                     subtitle,
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: const Color(0xFFF0F0FF),
+                    style: context.textStyles.labelSmall.copyWith(
+                      color: context.colors.textPrimary,
                       fontSize: 11,
                     ),
                     maxLines: 1,
@@ -317,8 +317,8 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
       child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surfaceSecondary,
-        border: Border.all(color: const Color(0xFF1E1E30)),
+        color: context.colors.surfaceSecondary,
+        border: Border.all(color: context.colors.borderDefault),
         borderRadius: BorderRadius.circular(9),
       ),
       child: Row(
@@ -338,16 +338,16 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.labelSmall.copyWith(
-                    color: const Color(0xFFC0C0E0),
+                  style: context.textStyles.labelSmall.copyWith(
+                    color: context.colors.textMuted,
                     fontSize: 10,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
                   subtitle,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: const Color(0xFFAFADDF),
+                  style: context.textStyles.bodySmall.copyWith(
+                    color: context.colors.textMuted,
                     fontSize: 8,
                   ),
                 ),
@@ -356,8 +356,8 @@ class _HomeDashboardOffScreenState extends State<HomeDashboardOffScreen> {
           ),
           Text(
             time,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: const Color(0xFFAFADDF),
+            style: context.textStyles.bodySmall.copyWith(
+              color: context.colors.textMuted,
               fontSize: 8,
             ),
           ),

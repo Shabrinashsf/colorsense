@@ -4,6 +4,8 @@ import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/home_dashboard_on.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_palet.dart';
+import 'package:colorsense/screens/tersimpan.dart';
+import 'package:colorsense/screens/pengaturan.dart';
 
 // -----------------------------------------------------------------------------
 // 15 - Palet Warna | Figma node: 12:150
@@ -31,7 +33,6 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +50,7 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                 children: [
                   Text(
                     'Palet Warna',
-                    style: AppTextStyles.headlineLarge.copyWith(
+                    style: context.textStyles.headlineLarge.copyWith(
                       fontSize: 17,
                     ),
                   ),
@@ -59,28 +60,28 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                     height: 32,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceSecondary,
-                      border: Border.all(color: const Color(0xFF1E1E30)),
+                      color: context.colors.surfaceSecondary,
+                      border: Border.all(color: context.colors.borderDefault),
                       borderRadius: BorderRadius.circular(9),
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.search,
-                          color: Color(0xFFAFADDF),
+                          color: context.colors.textMuted,
                           size: 14,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: TextField(
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: Colors.white,
+                            style: context.textStyles.bodySmall.copyWith(
+                              color: context.colors.textPrimary,
                               fontSize: 10,
                             ),
                             decoration: InputDecoration(
                               hintText: 'Cari warna atau palet...',
-                              hintStyle: AppTextStyles.bodySmall.copyWith(
-                                color: const Color(0xFFAFADDF),
+                              hintStyle: context.textStyles.bodySmall.copyWith(
+                                color: context.colors.textMuted,
                                 fontSize: 10,
                               ),
                               border: InputBorder.none,
@@ -128,7 +129,7 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                       ),
                       child: Text(
                         _filters[index],
-                        style: AppTextStyles.labelMedium.copyWith(
+                        style: context.textStyles.labelMedium.copyWith(
                           color: isSelected
                               ? const Color(0xFF9D97FF)
                               : const Color(0xFFAFADDF),
@@ -235,8 +236,21 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                       builder: (context) => const ColorIdentifierScreen(),
                     ),
                   );
+                } else if (index == 3) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TersimpanScreen(),
+                    ),
+                  );
+                } else if (index == 4) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PengaturanScreen(),
+                    ),
+                  );
                 }
-                // (Simpan and Setting to be added later)
               },
             ),
           ],
@@ -254,8 +268,8 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColors.surfaceSecondary,
-        border: Border.all(color: const Color(0xFF1E1E30)),
+        color: context.colors.surfaceSecondary,
+        border: Border.all(color: context.colors.borderDefault),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -286,16 +300,16 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.headlineMedium.copyWith(
-                      color: const Color(0xFFD0D0F0),
+                    style: context.textStyles.headlineMedium.copyWith(
+                      color: context.colors.textSecondary,
                       fontSize: 11,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: const Color(0xFFAFADDF),
+                    style: context.textStyles.bodySmall.copyWith(
+                      color: context.colors.textMuted,
                       fontSize: 8,
                     ),
                   ),
@@ -314,7 +328,7 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                   ),
                   child: Text(
                     'Liat Detail',
-                    style: AppTextStyles.labelSmall.copyWith(
+                    style: context.textStyles.labelSmall.copyWith(
                       color: const Color(0xFF00D9A3),
                       fontSize: 8,
                     ),

@@ -13,7 +13,6 @@ class IzinKameraScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -38,7 +37,7 @@ class IzinKameraScreen extends StatelessWidget {
               Text(
                 'Izinkan Akses Kamera',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   fontSize: 18,
                 ),
               ),
@@ -49,10 +48,10 @@ class IzinKameraScreen extends StatelessWidget {
               Text(
                 'ColorSense membutuhkan izin akses kamera untuk mengidentifikasi warna secara real-time. Tidak ada foto yang disimpan tanpa persetujuanmu.',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   fontSize: 10,
                   height: 17 / 10,
-                  color: const Color(0xFFAFADDF),
+                  color: context.colors.textMuted,
                 ),
               ),
 
@@ -68,8 +67,8 @@ class IzinKameraScreen extends StatelessWidget {
                   bottom: 11,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceSecondary,
-                  border: Border.all(color: const Color(0xFF1E1E30)),
+                  color: context.colors.surfaceSecondary,
+                  border: Border.all(color: context.colors.borderDefault),
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: Column(
@@ -77,16 +76,16 @@ class IzinKameraScreen extends StatelessWidget {
                   children: [
                     Text(
                       'KAMERA DIGUNAKAN UNTUK',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         letterSpacing: 1,
                         fontSize: 8,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildBulletPoint('Identifikasi warna objek real-time'),
-                    _buildBulletPoint('Terapkan filter aksesibilitas live'),
-                    _buildBulletPoint('Scan foto dari galeri (opsional)', isLast: true),
+                    _buildBulletPoint(context, 'Identifikasi warna objek real-time'),
+                    _buildBulletPoint(context, 'Terapkan filter aksesibilitas live'),
+                    _buildBulletPoint(context, 'Scan foto dari galeri (opsional)', isLast: true),
                   ],
                 ),
               ),
@@ -127,9 +126,9 @@ class IzinKameraScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     'Tidak sekarang',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: context.textStyles.bodyMedium.copyWith(
                       fontSize: 10,
-                      color: const Color(0xFF9D97FF),
+                      color: context.colors.textLabel,
                     ),
                   ),
                 ),
@@ -142,26 +141,26 @@ class IzinKameraScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBulletPoint(String text, {bool isLast = false}) {
+  Widget _buildBulletPoint(BuildContext context, String text, {bool isLast = false}) {
     return Padding(
       padding: EdgeInsets.only(bottom: isLast ? 0 : 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 5, right: 6, left: 5),
+          Padding(
+            padding: const EdgeInsets.only(top: 5, right: 6, left: 5),
             child: Icon(
               Icons.circle,
               size: 4,
-              color: Color(0xFFAFADDF),
+              color: context.colors.textMuted,
             ),
           ),
           Expanded(
             child: Text(
               text,
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: context.textStyles.bodyMedium.copyWith(
                 fontSize: 10,
-                color: const Color(0xFFAFADDF),
+                color: context.colors.textMuted,
               ),
             ),
           ),

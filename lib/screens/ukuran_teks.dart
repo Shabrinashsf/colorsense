@@ -20,7 +20,6 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -39,10 +38,14 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
                           child: SvgPicture.asset(
-                            'assets/icons/ic_arrow_left_circle.svg',
-                            width: 24,
-                            height: 24,
-                          ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -51,14 +54,14 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                             children: [
                               Text(
                                 'Ukuran Teks',
-                                style: AppTextStyles.headlineMedium.copyWith(
+                                style: context.textStyles.headlineMedium.copyWith(
                                   fontSize: 13,
                                 ),
                               ),
                               Text(
                                 'Perubahan langsung diterapkan ke seluruh aplikasi.',
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: const Color(0xFFAFADDF),
+                                style: context.textStyles.bodySmall.copyWith(
+                                  color: context.colors.textMuted,
                                   fontSize: 9,
                                 ),
                               ),
@@ -73,8 +76,8 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       width: double.infinity,
@@ -83,25 +86,25 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                         children: [
                           Text(
                             'Biru Cobalt',
-                            style: AppTextStyles.headlineLarge.copyWith(
+                            style: context.textStyles.headlineLarge.copyWith(
                               fontSize: 18,
-                              color: const Color(0xFFF0F0FF),
+                              color: context.colors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 3),
                           Text(
                             '#2980B9 · RGB(41,128,185)',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: context.textStyles.bodyMedium.copyWith(
                               fontSize: 12,
-                              color: const Color(0xFFAFADDF),
+                              color: context.colors.textMuted,
                             ),
                           ),
                           const SizedBox(height: 3),
                           Text(
                             '"Seperti langit cerah di siang hari"',
-                            style: AppTextStyles.bodySmall.copyWith(
+                            style: context.textStyles.bodySmall.copyWith(
                               fontSize: 10,
-                              color: const Color(0xFFAFADDF),
+                              color: context.colors.textMuted,
                             ),
                           ),
                         ],
@@ -112,8 +115,8 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                     // ── Pilih Ukuran ───────────────────────────────────────
                     Text(
                       'PILIH UKURAN',
-                      style: AppTextStyles.labelMedium.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelMedium.copyWith(
+                        color: context.colors.textLabel,
                         fontSize: 8,
                         letterSpacing: 1,
                       ),
@@ -150,7 +153,7 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                     
                     const SizedBox(height: 7),
                     Divider(
-                      color: const Color(0xFF1E1E30),
+                      color: context.colors.borderDefault,
                       thickness: 1,
                       height: 1,
                     ),
@@ -160,8 +163,8 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceSecondary,
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfaceSecondary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -173,16 +176,16 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                               children: [
                                 Text(
                                   'Ikuti Ukuran Sistem',
-                                  style: AppTextStyles.headlineMedium.copyWith(
-                                    color: const Color(0xFFD0D0F0),
+                                  style: context.textStyles.headlineMedium.copyWith(
+                                    color: context.colors.textSecondary,
                                     fontSize: 10,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
                                   'Gunakan ukuran dari pengaturan HP',
-                                  style: AppTextStyles.bodySmall.copyWith(
-                                    color: const Color(0xFFAFADDF),
+                                  style: context.textStyles.bodySmall.copyWith(
+                                    color: context.colors.textMuted,
                                     fontSize: 9,
                                   ),
                                 ),
@@ -204,7 +207,7 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                                 activeThumbColor: Colors.white,
                                 activeTrackColor: const Color(0xFF6C63FF),
                                 inactiveThumbColor: Colors.white,
-                                inactiveTrackColor: const Color(0xFF1E1E30),
+                                inactiveTrackColor: context.colors.borderDefault,
                               ),
                             ),
                           ),
@@ -232,8 +235,8 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                   alignment: Alignment.center,
                   child: Text(
                     'Simpan Perubahan',
-                    style: AppTextStyles.labelLarge.copyWith(
-                      color: const Color(0xFFF0F0FF),
+                    style: context.textStyles.labelLarge.copyWith(
+                      color: context.colors.textPrimary,
                       fontSize: 12,
                     ),
                   ),
@@ -277,7 +280,7 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
               child: Text(
                 'A',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   color: textColor,
                   fontSize: iconSize,
                 ),
@@ -290,7 +293,7 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                 children: [
                   Text(
                     label,
-                    style: AppTextStyles.headlineMedium.copyWith(
+                    style: context.textStyles.headlineMedium.copyWith(
                       color: textColor,
                       fontSize: 10,
                     ),
@@ -298,8 +301,8 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
                   const SizedBox(height: 3),
                   Text(
                     desc,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: const Color(0xFFAFADDF),
+                    style: context.textStyles.bodySmall.copyWith(
+                      color: context.colors.textMuted,
                       fontSize: 9,
                     ),
                   ),

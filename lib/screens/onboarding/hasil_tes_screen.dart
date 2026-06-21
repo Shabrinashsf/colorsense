@@ -42,7 +42,6 @@ class HasilTesScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -75,8 +74,8 @@ class HasilTesScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'HASIL TES BUTA WARNA',
-                  style: AppTextStyles.labelXSmall.copyWith(
-                    color: const Color(0xFF9D97FF),
+                  style: context.textStyles.labelXSmall.copyWith(
+                    color: context.colors.textLabel,
                   ),
                 ),
               ),
@@ -87,7 +86,7 @@ class HasilTesScreen extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   fontSize: 20,
                   height: 28 / 20,
                 ),
@@ -99,10 +98,10 @@ class HasilTesScreen extends StatelessWidget {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: context.textStyles.bodyMedium.copyWith(
                     fontSize: 11,
                     height: 17 / 11,
-                    color: const Color(0xFFAFADDF),
+                    color: context.colors.textMuted,
                   ),
                   children: [
                     TextSpan(text: descPrefix),
@@ -122,8 +121,8 @@ class HasilTesScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceSecondary,
-                  border: Border.all(color: const Color(0xFF1E1E30)),
+                  color: context.colors.surfaceSecondary,
+                  border: Border.all(color: context.colors.borderDefault),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -131,14 +130,15 @@ class HasilTesScreen extends StatelessWidget {
                   children: [
                     Text(
                       'SKOR PER WARNA',
-                      style: AppTextStyles.labelXSmall.copyWith(
-                        color: const Color(0xFF9D97FF),
+                      style: context.textStyles.labelXSmall.copyWith(
+                        color: context.colors.textLabel,
                         letterSpacing: 1,
                         fontSize: 8,
                       ),
                     ),
                     const SizedBox(height: 12),
                     _buildScoreRow(
+                      context,
                       'Merah-Hijau',
                       80,
                       'Sulit',
@@ -146,6 +146,7 @@ class HasilTesScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     _buildScoreRow(
+                      context,
                       'Biru-Kuning',
                       15,
                       'Normal',
@@ -171,9 +172,9 @@ class HasilTesScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Kondisi ${tipe.split('/').first} sudah otomatis diterapkan ke profilmu.',
-                        style: AppTextStyles.bodyMedium.copyWith(
+                        style: context.textStyles.bodyMedium.copyWith(
                           fontSize: 10,
-                          color: const Color(0xFFAFADDF),
+                          color: context.colors.textMuted,
                         ),
                       ),
                     ),
@@ -196,9 +197,9 @@ class HasilTesScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'Tes ulang',
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: context.textStyles.bodyMedium.copyWith(
                       fontSize: 11,
-                      color: const Color(0xFF9D97FF),
+                      color: context.colors.textLabel,
                     ),
                   ),
                 ),
@@ -235,7 +236,7 @@ class HasilTesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScoreRow(String label, int percentage, String status, Color color) {
+  Widget _buildScoreRow(BuildContext context, String label, int percentage, String status, Color color) {
     return Row(
       children: [
         Container(
@@ -251,9 +252,9 @@ class HasilTesScreen extends StatelessWidget {
           width: 60, // Fixed width for label to align nicely
           child: Text(
             label,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.textStyles.bodySmall.copyWith(
               fontSize: 9,
-              color: const Color(0xFF9090B0),
+              color: context.colors.textMuted,
             ),
           ),
         ),
@@ -261,7 +262,7 @@ class HasilTesScreen extends StatelessWidget {
           width: 25,
           child: Text(
             '$percentage%',
-            style: AppTextStyles.labelXSmall.copyWith(
+            style: context.textStyles.labelXSmall.copyWith(
               fontSize: 8,
               color: color,
             ),
@@ -274,7 +275,7 @@ class HasilTesScreen extends StatelessWidget {
               Container(
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.06),
+                  color: context.colors.textMuted,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -296,7 +297,7 @@ class HasilTesScreen extends StatelessWidget {
           width: 35,
           child: Text(
             status,
-            style: AppTextStyles.labelXSmall.copyWith(
+            style: context.textStyles.labelXSmall.copyWith(
               fontSize: 8,
               color: color,
             ),

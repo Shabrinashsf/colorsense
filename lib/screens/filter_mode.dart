@@ -28,7 +28,6 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Column(
           children: [
@@ -47,15 +46,19 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
                           child: SvgPicture.asset(
-                            'assets/icons/ic_arrow_left_circle.svg',
-                            width: 24,
-                            height: 24,
-                          ),
+                              'assets/icons/ic_arrow_left_circle.svg',
+                              width: 24,
+                              height: 24,
+                              colorFilter: ColorFilter.mode(
+                                context.colors.textPrimary,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                         ),
                         const SizedBox(width: 10),
                         Text(
                           'Mode Filter',
-                          style: AppTextStyles.headlineMedium.copyWith(
+                          style: context.textStyles.headlineMedium.copyWith(
                             fontSize: 13,
                           ),
                         ),
@@ -94,7 +97,7 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
                               ),
                               child: Text(
                                 _tabs[index],
-                                style: AppTextStyles.labelMedium.copyWith(
+                                style: context.textStyles.labelMedium.copyWith(
                                   color: isSelected
                                       ? const Color(0xFF9D97FF)
                                       : const Color(0xFF606080),
@@ -187,14 +190,14 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
                         height: 48, // Taller than Figma's 38px for touch target
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: AppColors.surfaceSecondary,
-                          border: Border.all(color: const Color(0xFF1E1E30)),
+                          color: context.colors.surfaceSecondary,
+                          border: Border.all(color: context.colors.borderDefault),
                           borderRadius: BorderRadius.circular(9),
                         ),
                         child: Text(
                           'Preview',
-                          style: AppTextStyles.labelMedium.copyWith(
-                            color: const Color(0xFFD0D0F0),
+                          style: context.textStyles.labelMedium.copyWith(
+                            color: context.colors.textSecondary,
                             fontSize: 12,
                           ),
                         ),
@@ -218,8 +221,8 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
                         ),
                         child: Text(
                           'Terapkan',
-                          style: AppTextStyles.labelMedium.copyWith(
-                            color: const Color(0xFFF0F0FF),
+                          style: context.textStyles.labelMedium.copyWith(
+                            color: context.colors.textPrimary,
                             fontSize: 12,
                           ),
                         ),
@@ -273,7 +276,7 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
                   height: 18,
                   decoration: BoxDecoration(
                     color: color,
-                    border: Border.all(color: Colors.white),
+                    border: Border.all(color: context.colors.textPrimary),
                     borderRadius: BorderRadius.circular(3),
                   ),
                 );
@@ -282,8 +285,8 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
             const Spacer(),
             Text(
               title,
-              style: AppTextStyles.labelMedium.copyWith(
-                color: const Color(0xFFC0C0E0),
+              style: context.textStyles.labelMedium.copyWith(
+                color: context.colors.textMuted,
                 fontSize: 9,
               ),
               maxLines: 1,
@@ -292,8 +295,8 @@ class _FilterModeScreenState extends State<FilterModeScreen> {
             const SizedBox(height: 3),
             Text(
               subtitle,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: const Color(0xFFAFADDF),
+              style: context.textStyles.bodySmall.copyWith(
+                color: context.colors.textMuted,
                 fontSize: 8,
               ),
               maxLines: 1,

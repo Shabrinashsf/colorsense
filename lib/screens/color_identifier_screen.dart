@@ -12,9 +12,13 @@ class ColorIdentifierScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
-      body: Column(
+    return Theme(
+      data: AppTheme.darkTheme,
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: context.colors.backgroundPrimary,
+            body: Column(
         children: [
           // ── Camera Area ──────────────────────────────────────────────────
           Expanded(
@@ -28,7 +32,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Camera Feed',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: context.textStyles.bodyMedium.copyWith(
                         color: Colors.white54,
                       ),
                     ),
@@ -106,7 +110,7 @@ class ColorIdentifierScreen extends StatelessWidget {
 
           // ── Bottom Panel ─────────────────────────────────────────────────
           Container(
-            color: const Color(0xFF0A0A14),
+            color: context.colors.backgroundPrimary,
             padding: const EdgeInsets.only(
               left: AppSpacing.screenH,
               right: AppSpacing.screenH,
@@ -137,7 +141,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Biru Cobalt',
-                            style: AppTextStyles.headlineSmall.copyWith(
+                            style: context.textStyles.headlineSmall.copyWith(
                               fontSize: 13,
                               color: const Color(0xFFF0F0FF),
                             ),
@@ -145,7 +149,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                           const SizedBox(height: 3),
                           Text(
                             '#2980B9 · RGB(41,128,185)',
-                            style: AppTextStyles.bodySmall.copyWith(
+                            style: context.textStyles.bodySmall.copyWith(
                               fontSize: 9,
                               color: const Color(0xFFAFADDF),
                             ),
@@ -160,13 +164,13 @@ class ColorIdentifierScreen extends StatelessWidget {
                       height: 20,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF121126),
+                        color: context.colors.surfaceActive,
                         border: Border.all(color: const Color(0xFF6C63FF)),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
                         '97%',
-                        style: AppTextStyles.labelSmall.copyWith(
+                        style: context.textStyles.labelSmall.copyWith(
                           color: const Color(0xFF6C63FF),
                           fontSize: 9,
                         ),
@@ -193,7 +197,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                         ),
                         child: Text(
                           'Detail',
-                          style: AppTextStyles.labelSmall.copyWith(
+                          style: context.textStyles.labelSmall.copyWith(
                             color: const Color(0xFFF0F0FF),
                             fontSize: 9,
                           ),
@@ -211,6 +215,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _buildColorChip(
+                        context: context,
                         color: const Color(0xFF5DADE2),
                         label: 'Biru Langit',
                       ),
@@ -218,6 +223,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: _buildColorChip(
+                        context: context,
                         color: const Color(0xFF1A5276),
                         label: 'Navy',
                       ),
@@ -225,6 +231,7 @@ class ColorIdentifierScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: _buildColorChip(
+                        context: context,
                         color: const Color(0xFFAED6F1),
                         label: 'Biru Muda',
                       ),
@@ -244,8 +251,8 @@ class ColorIdentifierScreen extends StatelessWidget {
                       height: 40,
                       padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF12121E),
-                        border: Border.all(color: const Color(0xFF1E1E30)),
+                        color: context.colors.surfacePrimary,
+                        border: Border.all(color: context.colors.borderDefault),
                         borderRadius: BorderRadius.circular(9),
                       ),
                       child: Center(
@@ -287,16 +294,19 @@ class ColorIdentifierScreen extends StatelessWidget {
           ),
         ],
       ),
+          );
+        }
+      ),
     );
   }
 
-  Widget _buildColorChip({required Color color, required String label}) {
+  Widget _buildColorChip({required BuildContext context, required Color color, required String label}) {
     return Container(
       height: 24, // Slightly taller than 20px for better touch target
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFF12121E),
-        border: Border.all(color: const Color(0xFF1E1E30)),
+        color: context.colors.surfacePrimary,
+        border: Border.all(color: context.colors.borderDefault),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
@@ -314,7 +324,7 @@ class ColorIdentifierScreen extends StatelessWidget {
           Flexible(
             child: Text(
               label,
-              style: AppTextStyles.bodySmall.copyWith(
+              style: context.textStyles.bodySmall.copyWith(
                 color: const Color(0xFFC0C0E0),
                 fontSize: 8,
               ),

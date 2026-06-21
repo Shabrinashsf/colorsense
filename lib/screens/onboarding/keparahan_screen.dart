@@ -22,7 +22,6 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -44,7 +43,7 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
               // ── Headline ─────────────────────────────────────────────
               Text(
                 'Tingkat keparahan\nkondisimu',
-                style: AppTextStyles.headlineLarge.copyWith(
+                style: context.textStyles.headlineLarge.copyWith(
                   height: 30 / 24,
                 ),
               ),
@@ -54,7 +53,7 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
               // ── Sub-headline ─────────────────────────────────────────
               Text(
                 'Fitur ini akan menentukan intensitas filter yang akan diterapkan.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   fontSize: 11,
                   height: 17 / 11,
                 ),
@@ -65,8 +64,8 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
               // ── WARNA ASLI ───────────────────────────────────────────
               Text(
                 'WARNA ASLI',
-                style: AppTextStyles.labelXSmall.copyWith(
-                  color: const Color(0xFF9D97FF),
+                style: context.textStyles.labelXSmall.copyWith(
+                  color: context.colors.textLabel,
                   letterSpacing: 1,
                   fontSize: 8,
                 ),
@@ -87,8 +86,8 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
                         const SizedBox(height: 4),
                         Text(
                           'MERAH',
-                          style: AppTextStyles.labelXSmall.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
+                          style: context.textStyles.labelXSmall.copyWith(
+                            color: context.colors.textMuted,
                             fontSize: 8,
                           ),
                         ),
@@ -109,8 +108,8 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
                         const SizedBox(height: 4),
                         Text(
                           'HIJAU',
-                          style: AppTextStyles.labelXSmall.copyWith(
-                            color: Colors.white.withValues(alpha: 0.8),
+                          style: context.textStyles.labelXSmall.copyWith(
+                            color: context.colors.textMuted,
                             fontSize: 8,
                           ),
                         ),
@@ -125,8 +124,8 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
               // ── PREVIEW ──────────────────────────────────────────────
               Text(
                 'PREVIEW',
-                style: AppTextStyles.labelXSmall.copyWith(
-                  color: const Color(0xFF9D97FF),
+                style: context.textStyles.labelXSmall.copyWith(
+                  color: context.colors.textLabel,
                   letterSpacing: 1,
                   fontSize: 8,
                 ),
@@ -201,7 +200,7 @@ class _KeparahanScreenState extends State<KeparahanScreen> {
         children: [
           Text(
             title,
-            style: AppTextStyles.labelXSmall.copyWith(
+            style: context.textStyles.labelXSmall.copyWith(
               color: titleColor,
               fontSize: 8,
               letterSpacing: 0.3,

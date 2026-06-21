@@ -56,7 +56,7 @@ class OptionCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.titleSmall.copyWith(
+                    style: context.textStyles.titleSmall.copyWith(
                       fontSize: 11,
                       color: AppColors.textPrimary,
                     ),
@@ -64,7 +64,7 @@ class OptionCard extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     subtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
+                    style: context.textStyles.bodySmall.copyWith(
                       fontSize: 9,
                       color: AppColors.textMuted,
                     ),
