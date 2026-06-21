@@ -21,12 +21,7 @@ void main() async {
   final sharedPrefs = await SharedPreferences.getInstance();
   await Hive.initFlutter();
   
-  try {
-    globalCameras = await availableCameras();
-  } catch (e) {
-    debugPrint('Error getting cameras: $e');
-    globalCameras = [];
-  }
+  globalCameras = [];
 
   runApp(
     ProviderScope(

@@ -7,28 +7,23 @@ import 'package:colorsense/theme/app_theme.dart';
 // -----------------------------------------------------------------------------
 
 class DetailPaletScreen extends StatelessWidget {
-  const DetailPaletScreen({super.key});
+  final String title;
+  final String subtitle;
+  final List<Color> colors;
+
+  const DetailPaletScreen({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.colors,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Hardcoded Okabe-Ito for UI slicing
-    final colors = [
-      const Color(0xFFE69F00),
-      const Color(0xFF56B4E9),
-      const Color(0xFF009E73),
-      const Color(0xFFF0E442),
-      const Color(0xFF0072B2),
-      const Color(0xFFD55E00),
-    ];
-
-    final hexCodes = [
-      '#E69F00',
-      '#56B4E9',
-      '#009E73',
-      '#F0E442',
-      '#0072B2',
-      '#D55E00',
-    ];
+    // Generate hex codes dynamically
+    final hexCodes = colors.map((c) {
+      return '#${c.value.toRadixString(16).substring(2).toUpperCase()}';
+    }).toList();
 
     return Scaffold(
       body: SafeArea(
@@ -68,14 +63,14 @@ class DetailPaletScreen extends StatelessWidget {
 
               // ── Title & Subtitle ───────────────────────────────────
               Text(
-                'Okabe-Ito Palette',
+                title,
                 style: context.textStyles.headlineLarge.copyWith(
                   fontSize: 16,
                 ),
               ),
               const SizedBox(height: 3),
               Text(
-                'Untuk semua tipe buta warna · 8 warna', // Text from Figma
+                subtitle, // e.g. "Paling direkomendasikan"
                 style: context.textStyles.bodySmall.copyWith(
                   color: context.colors.textMuted,
                   fontSize: 9,

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/utils/wcag_checker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 // -----------------------------------------------------------------------------
 // 14 - Contrast Checker | Figma node: 12:104
@@ -23,6 +24,56 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
 
   Color _leftColor = const Color(0xFFF0F0FF);
   Color _rightColor = const Color(0xFF2980B9);
+
+  final TextEditingController _leftController = TextEditingController();
+  final TextEditingController _rightController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _leftController.text = _colorToHex(_leftColor);
+    _rightController.text = _colorToHex(_rightColor);
+  }
+
+  @override
+  void dispose() {
+    _leftController.dispose();
+    _rightController.dispose();
+    super.dispose();
+  }
+
+  String _colorToHex(Color c) => '#${c.value.toRadixString(16).substring(2).toUpperCase()}';
+
+  void _updateColor(bool isLeft, Color newColor) {
+    setState(() {
+      if (isLeft) {
+        _leftColor = newColor;
+        _leftController.text = _colorToHex(newColor);
+      } else {
+        _rightColor = newColor;
+        _rightController.text = _colorToHex(newColor);
+      }
+      _showResult = false; // hide result on change
+    });
+  }
+
+  void _handleHexSubmit(bool isLeft, String hexString) {
+    String cleanHex = hexString.replaceAll('#', '');
+    if (cleanHex.length == 6) {
+      cleanHex = 'FF$cleanHex';
+    }
+    final int? colorValue = int.tryParse(cleanHex, radix: 16);
+    if (colorValue != null) {
+      _updateColor(isLeft, Color(colorValue));
+    } else {
+      // Revert text if invalid
+      if (isLeft) {
+        _leftController.text = _colorToHex(_leftColor);
+      } else {
+        _rightController.text = _colorToHex(_rightColor);
+      }
+    }
+  }
 
   bool _showResult = false;
   double _contrastRatio = 1.0;
@@ -78,17 +129,9 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: Container(
                       height: 126,
-                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: _rightColor,
+                        color: _leftColor,
                         borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        'Aa',
-                        style: context.textStyles.headlineLarge.copyWith(
-                          color: _leftColor,
-                          fontSize: 24,
-                        ),
                       ),
                     ),
                   ),
@@ -96,17 +139,9 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: Container(
                       height: 126,
-                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: _leftColor,
+                        color: _rightColor,
                         borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        'Aa',
-                        style: context.textStyles.headlineLarge.copyWith(
-                          color: _rightColor,
-                          fontSize: 24,
-                        ),
                       ),
                     ),
                   ),
@@ -120,8 +155,9 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: _buildInputControl(
                       color: _leftColor,
-                      hexText: '#${_leftColor.value.toRadixString(16).substring(2).toUpperCase()}',
+                      controller: _leftController,
                       currentMode: _leftMode,
+                      isLeft: true,
                       onModeChanged: (mode) {
                         setState(() {
                           _leftMode = mode;
@@ -133,8 +169,9 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: _buildInputControl(
                       color: _rightColor,
-                      hexText: '#${_rightColor.value.toRadixString(16).substring(2).toUpperCase()}',
+                      controller: _rightController,
                       currentMode: _rightMode,
+                      isLeft: false,
                       onModeChanged: (mode) {
                         setState(() {
                           _rightMode = mode;
@@ -222,8 +259,9 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
 
   Widget _buildInputControl({
     required Color color,
-    required String hexText,
+    required TextEditingController controller,
     required InputMode currentMode,
+    required bool isLeft,
     required ValueChanged<InputMode> onModeChanged,
   }) {
     return Container(
@@ -248,7 +286,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _buildDynamicInputAction(context, currentMode, hexText),
+                child: _buildDynamicInputAction(context, currentMode, controller, isLeft, color),
               ),
             ],
           ),
@@ -283,12 +321,13 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
     );
   }
 
-  Widget _buildDynamicInputAction(BuildContext context, InputMode mode, String hexText) {
+  Widget _buildDynamicInputAction(BuildContext context, InputMode mode, TextEditingController controller, bool isLeft, Color currentColor) {
     if (mode == InputMode.type) {
       return SizedBox(
         height: 20,
         child: TextField(
-          controller: TextEditingController(text: hexText),
+          controller: controller,
+          onSubmitted: (val) => _handleHexSubmit(isLeft, val),
           style: context.textStyles.bodySmall.copyWith(
             color: context.colors.textMuted,
             fontSize: 9,
@@ -302,13 +341,16 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
       );
     } else if (mode == InputMode.cam) {
       return GestureDetector(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ColorIdentifierScreen(),
+              builder: (context) => const ColorIdentifierScreen(isSelectionMode: true),
             ),
           );
+          if (result != null && result is String) {
+            _handleHexSubmit(isLeft, result);
+          }
         },
         child: Text(
           'Buka Kamera',
@@ -323,19 +365,34 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
     } else {
       return GestureDetector(
         onTap: () {
+          Color pickerColor = currentColor;
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
               backgroundColor: context.colors.surfaceSecondary,
-              title: Text('Color Picker', style: context.textStyles.headlineMedium),
-              content: Text(
-                'Pop-up Color Picker akan muncul di sini.',
-                style: context.textStyles.bodySmall.copyWith(color: context.colors.textPrimary),
+              title: Text('Pilih Warna', style: context.textStyles.headlineMedium),
+              content: SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: currentColor,
+                  onColorChanged: (c) => pickerColor = c,
+                  pickerAreaHeightPercent: 0.8,
+                  enableAlpha: false,
+                  displayThumbColor: true,
+                  paletteType: PaletteType.hsvWithHue,
+                  labelTypes: const [],
+                ),
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Tutup', style: TextStyle(color: AppColors.primary)),
+                  child: Text('Batal', style: TextStyle(color: context.colors.textMuted)),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _updateColor(isLeft, pickerColor);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Pilih', style: TextStyle(color: AppColors.primary)),
                 ),
               ],
             ),

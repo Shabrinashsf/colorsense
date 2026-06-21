@@ -30,9 +30,9 @@ class DetailWarnaScreen extends ConsumerWidget {
     final Color actualColor = Color(parsedColorValue);
     
     // Calculate RGB
-    final int r = actualColor.r.toInt();
-    final int g = actualColor.g.toInt();
-    final int b = actualColor.b.toInt();
+    final int r = actualColor.red;
+    final int g = actualColor.green;
+    final int b = actualColor.blue;
     final String rgbStr = '$r, $g, $b';
 
     // Calculate HSL

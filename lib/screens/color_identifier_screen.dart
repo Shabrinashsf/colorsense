@@ -15,7 +15,12 @@ import 'package:colorsense/providers/bottom_nav_provider.dart';
 // -----------------------------------------------------------------------------
 
 class ColorIdentifierScreen extends ConsumerStatefulWidget {
-  const ColorIdentifierScreen({super.key});
+  final bool isSelectionMode;
+  
+  const ColorIdentifierScreen({
+    super.key,
+    this.isSelectionMode = false,
+  });
 
   @override
   ConsumerState<ColorIdentifierScreen> createState() => _ColorIdentifierScreenState();
@@ -34,6 +39,9 @@ class _ColorIdentifierScreenState extends ConsumerState<ColorIdentifierScreen> {
 
   Future<void> _initCamera() async {
     try {
+      if (globalCameras.isEmpty) {
+        globalCameras = await availableCameras();
+      }
       if (globalCameras.isEmpty) {
         setState(() => _cameraError = 'Kamera tidak ditemukan di perangkat ini.');
         return;
@@ -83,16 +91,20 @@ class _ColorIdentifierScreenState extends ConsumerState<ColorIdentifierScreen> {
         final hexColor = '#${r.toRadixString(16).padLeft(2, '0')}${g.toRadixString(16).padLeft(2, '0')}${b.toRadixString(16).padLeft(2, '0')}'.toUpperCase();
 
         if (mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailWarnaScreen(
-                colorName: colorName,
-                hexColor: hexColor,
-                sourceImageBytes: bytes, // Optional: pass image
+          if (widget.isSelectionMode) {
+            Navigator.pop(context, hexColor);
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailWarnaScreen(
+                  colorName: colorName,
+                  hexColor: hexColor,
+                  sourceImageBytes: bytes, // Optional: pass image
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
       }
     } catch (e) {

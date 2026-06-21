@@ -163,7 +163,18 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DetailPaletScreen(),
+                          builder: (context) => const DetailPaletScreen(
+                            title: 'Okabe-Ito',
+                            subtitle: 'Paling direkomendasikan',
+                            colors: [
+                              Color(0xFFE69F00),
+                              Color(0xFF56B4E9),
+                              Color(0xFF009E73),
+                              Color(0xFFF0E442),
+                              Color(0xFF0072B2),
+                              Color(0xFFD55E00),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -184,7 +195,18 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DetailPaletScreen(),
+                          builder: (context) => const DetailPaletScreen(
+                            title: "Wong's Palette",
+                            subtitle: 'Kontras tinggi',
+                            colors: [
+                              Color(0xFF0077BB),
+                              Color(0xFF33BBEE),
+                              Color(0xFF009988),
+                              Color(0xFFEE7733),
+                              Color(0xFFCC3311),
+                              Color(0xFFEE3377),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -205,7 +227,18 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DetailPaletScreen(),
+                          builder: (context) => const DetailPaletScreen(
+                            title: "Tol's Bright",
+                            subtitle: 'Scientific viz',
+                            colors: [
+                              Color(0xFF332288),
+                              Color(0xFF117733),
+                              Color(0xFF44AA99),
+                              Color(0xFF88CCEE),
+                              Color(0xFFDDCC77),
+                              Color(0xFFCC6677),
+                            ],
+                          ),
                         ),
                       );
                     },
