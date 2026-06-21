@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/providers/bottom_nav_provider.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 import 'package:colorsense/widgets/bottom_navbar.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
@@ -14,18 +17,11 @@ import 'package:colorsense/screens/simulator_cb.dart';
 // 09 - Home Dashboard (Mode ON) | Figma node: 6:20
 // -----------------------------------------------------------------------------
 
-class HomeDashboardOnScreen extends StatefulWidget {
+class HomeDashboardOnScreen extends ConsumerWidget {
   const HomeDashboardOnScreen({super.key});
 
   @override
-  State<HomeDashboardOnScreen> createState() => _HomeDashboardOnScreenState();
-}
-
-class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
-  int _bottomNavIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -50,7 +46,9 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                           ),
                         const SizedBox(width: 10),
                         Text(
-                          'Ama',
+                          ref.watch(userPreferencesProvider).userName.isNotEmpty 
+                            ? ref.watch(userPreferencesProvider).userName 
+                            : 'User',
                           style: context.textStyles.bodyMedium.copyWith(
                             color: context.colors.textSecondary,
                             fontSize: 11,
@@ -77,22 +75,19 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                       children: [
                         Expanded(
                           child: _buildShortcutCard(
+                            context: context,
                             iconPath: 'assets/icons/ic_camera.svg',
                             title: 'Identifikasi Warna',
                             subtitle: 'Buka Kamera',
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ColorIdentifierScreen(),
-                                ),
-                              );
+                              ref.read(bottomNavIndexProvider.notifier).setIndex(2);
                             },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _buildShortcutCard(
+                            context: context,
                             iconPath: 'assets/icons/ic_mask.svg',
                             title: 'Contrast Checker',
                             subtitle: 'Cek Kontras',
@@ -113,22 +108,19 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                       children: [
                         Expanded(
                           child: _buildShortcutCard(
+                            context: context,
                             iconPath: 'assets/icons/ic_element4.svg',
                             title: '24+ Palet',
                             subtitle: 'Jelajahi warna',
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const PaletWarnaScreen(),
-                                ),
-                              );
+                              ref.read(bottomNavIndexProvider.notifier).setIndex(1);
                             },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: _buildShortcutCard(
+                            context: context,
                             iconPath: 'assets/icons/ic_eye.svg',
                             title: 'Simulasi Buta Warna',
                             subtitle: '3 Tipe',
@@ -159,7 +151,8 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                     const SizedBox(height: 10),
 
                     _buildRecentCard(
-                      color: const Color(0xFF2980B9),
+                      context: context,
+                      color: const Color(0xFF0047AB),
                       title: 'Biru Cobalt',
                       subtitle: '#2980B9 · via Kamera',
                       time: '2m',
@@ -174,6 +167,7 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
                     ),
                     const SizedBox(height: 8),
                     _buildRecentCard(
+                      context: context,
                       color: const Color(0xFF27AE60),
                       title: 'Hijau Emerald',
                       subtitle: '#27AE60 · via Foto',
@@ -192,45 +186,6 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
               ),
             ),
             
-            // ── Bottom Navbar ──────────────────────────────────────────
-            BottomNavbar(
-              currentIndex: _bottomNavIndex,
-              onTap: (index) {
-                if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PaletWarnaScreen(),
-                    ),
-                  );
-                } else if (index == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ColorIdentifierScreen(),
-                    ),
-                  );
-                } else if (index == 3) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TersimpanScreen(),
-                    ),
-                  );
-                } else if (index == 4) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PengaturanScreen(),
-                    ),
-                  );
-                }
-                setState(() {
-                  _bottomNavIndex = index;
-                });
-                // TODO: Handle tab switching logic later
-              },
-            ),
           ],
         ),
       ),
@@ -238,6 +193,7 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
   }
 
   Widget _buildShortcutCard({
+    required BuildContext context,
     required String iconPath,
     required String title,
     required String subtitle,
@@ -296,6 +252,7 @@ class _HomeDashboardOnScreenState extends State<HomeDashboardOnScreen> {
   }
 
   Widget _buildRecentCard({
+    required BuildContext context,
     required Color color,
     required String title,
     required String subtitle,

@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
-import 'package:colorsense/screens/onboarding/preferensi_screen.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
+import 'package:colorsense/screens/onboarding/tes_ishihara_screen.dart';
+import 'package:colorsense/screens/keparahan_settings.dart';
 
 // -----------------------------------------------------------------------------
 // 05 - Hasil Tes  |  Figma node: 4:93
 // -----------------------------------------------------------------------------
 
-class HasilTesScreen extends StatelessWidget {
+class HasilTesScreen extends ConsumerWidget {
   final String tipe;
+  final bool isRetake;
 
   const HasilTesScreen({
     super.key,
     this.tipe = 'Deuteranopia/Protanopia',
+    this.isRetake = false,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Determine dynamic content based on type (as per requirement)
     String title = 'Terdeteksi: $tipe';
     String descPrefix = 'Kamu kesulitan membedakan warna ';
@@ -118,43 +124,54 @@ class HasilTesScreen extends StatelessWidget {
               const SizedBox(height: 10),
 
               // ── Score Card ───────────────────────────────────────────
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                decoration: BoxDecoration(
-                  color: context.colors.surfaceSecondary,
-                  border: Border.all(color: context.colors.borderDefault),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'SKOR PER WARNA',
-                      style: context.textStyles.labelXSmall.copyWith(
-                        color: context.colors.textLabel,
-                        letterSpacing: 1,
-                        fontSize: 8,
+              if (tipe != 'Achromatopsia' && tipe != 'Tidak buta warna')
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: context.colors.surfaceSecondary,
+                    border: Border.all(color: context.colors.borderDefault),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'SKOR PER WARNA',
+                        style: context.textStyles.labelXSmall.copyWith(
+                          color: context.colors.textLabel,
+                          letterSpacing: 1,
+                          fontSize: 8,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildScoreRow(
-                      context,
-                      'Merah-Hijau',
-                      80,
-                      'Sulit',
-                      const Color(0xFFFF6B6B),
-                    ),
-                    const SizedBox(height: 10),
-                    _buildScoreRow(
-                      context,
-                      'Biru-Kuning',
-                      15,
-                      'Normal',
-                      const Color(0xFF00D9A3),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      if (tipe == 'Tritanopia') ...[
+                        _buildScoreRow(
+                          context,
+                          'Biru-Kuning',
+                          80,
+                          'Sulit',
+                          const Color(0xFF3498DB),
+                        ),
+                      ] else ...[
+                        _buildScoreRow(
+                          context,
+                          'Merah-Hijau',
+                          80,
+                          'Sulit',
+                          const Color(0xFFFF6B6B),
+                        ),
+                      ],
+                      const SizedBox(height: 10),
+                      _buildScoreRow(
+                        context,
+                        'Lainnya',
+                        20,
+                        'Normal',
+                        const Color(0xFF6C63FF),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
               const SizedBox(height: 10),
 
@@ -191,7 +208,16 @@ class HasilTesScreen extends StatelessWidget {
               // ── Tes Ulang Button ─────────────────────────────────────
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop(); // Go back to test
+                  if (isRetake) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TesIshiharaScreen(isRetake: true),
+                      ),
+                    );
+                  } else {
+                    context.go('/tes-ishihara');
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -212,21 +238,29 @@ class HasilTesScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (tipe == 'Tritanopia' || tipe == 'Deuteranopia/Protanopia') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const KeparahanScreen(),
-                        ),
-                      );
+                    ref.read(userPreferencesProvider.notifier).setCbType(tipe);
+                    if (isRetake) {
+                      if (tipe == 'Achromatopsia' || tipe == 'Saya tidak buta warna' || tipe == 'Tidak buta warna') {
+                        // Pop back to Pengaturan
+                        Navigator.pop(context);
+                      } else {
+                        // PushReplacement to KeparahanSettings to force a new selection
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const KeparahanSettingsScreen(),
+                          ),
+                        );
+                      }
                     } else {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const PreferensiScreen(),
-                        ),
-                      );
+                      if (tipe == 'Achromatopsia' || tipe == 'Tidak buta warna') {
+                        context.push('/preferensi');
+                      } else {
+                        context.push('/keparahan');
+                      }
                     }
                   },
-                  child: const Text('Lanjut \u2192'),
+                  child: const Text('Lanjutkan \u2192'),
                 ),
               ),
             ],

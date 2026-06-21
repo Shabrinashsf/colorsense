@@ -11,6 +11,7 @@ import 'package:colorsense/screens/filter_mode.dart';
 import 'package:colorsense/screens/ukuran_teks.dart';
 import 'package:colorsense/screens/keparahan_settings.dart';
 import 'package:colorsense/providers/theme_provider.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 18 - Pengaturan | Figma node: 12:311
@@ -24,8 +25,57 @@ class PengaturanScreen extends ConsumerStatefulWidget {
 }
 
 class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
-  bool _isLabelWarnaOtomatisOn = true;
-  bool _isTTSOn = false;
+  void _showEditProfileDialog() {
+    final prefs = ref.read(userPreferencesProvider);
+    final controller = TextEditingController(text: prefs.userName);
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: context.colors.surfaceSecondary,
+          title: Text('Edit Nama', style: context.textStyles.headlineMedium.copyWith(color: context.colors.textPrimary)),
+          content: TextField(
+            controller: controller,
+            style: context.textStyles.bodyMedium.copyWith(color: context.colors.textPrimary),
+            decoration: InputDecoration(
+              hintText: 'Nama kamu',
+              hintStyle: context.textStyles.bodyMedium.copyWith(color: context.colors.textMuted),
+              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: context.colors.borderDefault)),
+              focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text('Batal', style: TextStyle(color: context.colors.textMuted)),
+            ),
+            TextButton(
+              onPressed: () {
+                if (controller.text.trim().isNotEmpty) {
+                  ref.read(userPreferencesProvider.notifier).setUserName(controller.text.trim());
+                }
+                Navigator.pop(ctx);
+              },
+              child: const Text('Simpan', style: TextStyle(color: AppColors.primary)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateAccessibility(bool label, bool tts) {
+    if (label && tts) {
+      ref.read(userPreferencesProvider.notifier).setAccessibilityOption('Keduanya');
+    } else if (label) {
+      ref.read(userPreferencesProvider.notifier).setAccessibilityOption('Label Warna');
+    } else if (tts) {
+      ref.read(userPreferencesProvider.notifier).setAccessibilityOption('Text-to-Speech');
+    } else {
+      ref.read(userPreferencesProvider.notifier).setAccessibilityOption('Tidak Ada');
+    }
+  }
 
   void _showThemeSelector() {
     final currentMode = ref.read(themeModeProvider);
@@ -102,7 +152,23 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final themeMode = ref.watch(themeModeProvider);
+    final userPrefs = ref.watch(userPreferencesProvider);
     final themeLabel = themeMode == ThemeMode.light ? 'Terang' : 'Gelap';
+    
+    // Sync UI with state
+    final String cbTypeStr = userPrefs.cbType.isEmpty ? 'Belum Diatur' : userPrefs.cbType;
+    final String severityStr = userPrefs.severity.isEmpty ? '' : ' - ${userPrefs.severity}';
+    final String filterModeStr = (userPrefs.filterMode && userPrefs.filterModeName.isNotEmpty) 
+        ? userPrefs.filterModeName 
+        : 'Nonaktif';
+    final bool isLabelWarnaOn = userPrefs.accessibilityOption == 'Label Warna' || userPrefs.accessibilityOption == 'Keduanya';
+    final bool isTTSOn = userPrefs.accessibilityOption == 'Text-to-Speech' || userPrefs.accessibilityOption == 'Keduanya';
+    
+    String textScaleStr = 'Normal';
+    if (userPrefs.textScale == -1.0) textScaleStr = 'Ikuti Sistem';
+    else if (userPrefs.textScale == 0.8) textScaleStr = 'Kecil';
+    else if (userPrefs.textScale == 1.2) textScaleStr = 'Besar';
+    else if (userPrefs.textScale == 1.4) textScaleStr = 'Sangat Besar';
 
     return Scaffold(
       backgroundColor: colors.backgroundPrimary,
@@ -150,7 +216,7 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Ama',
+                                  userPrefs.userName.isNotEmpty ? userPrefs.userName : 'User',
                                   style: context.textStyles.headlineMedium.copyWith(
                                     fontSize: 12,
                                     color: colors.textPrimary,
@@ -167,11 +233,14 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                               ],
                             ),
                           ),
-                          Text(
-                            'Edit',
-                            style: context.textStyles.labelMedium.copyWith(
-                              color: AppColors.primary,
-                              fontSize: 9,
+                          GestureDetector(
+                            onTap: _showEditProfileDialog,
+                            child: Text(
+                              'Edit',
+                              style: context.textStyles.labelMedium.copyWith(
+                                color: AppColors.primary,
+                                fontSize: 9,
+                              ),
                             ),
                           ),
                         ],
@@ -191,7 +260,7 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                         children: [
                           _buildMenuItem(
                             title: 'Tipe Buta Warna',
-                            trailingText: 'Deuteranopia - Sedang',
+                            trailingText: '$cbTypeStr$severityStr',
                             colors: colors,
                             onTap: () {
                               Navigator.push(
@@ -205,7 +274,7 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                           _buildDivider(colors),
                           _buildMenuItem(
                             title: 'Mode Filter',
-                            trailingText: 'Default - Dark Accent',
+                            trailingText: filterModeStr,
                             colors: colors,
                             onTap: () {
                               Navigator.push(
@@ -219,23 +288,19 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                           _buildDivider(colors),
                           _buildSwitchItem(
                             title: 'Label Warna Otomatis',
-                            value: _isLabelWarnaOtomatisOn,
+                            value: isLabelWarnaOn,
                             colors: colors,
                             onChanged: (val) {
-                              setState(() {
-                                _isLabelWarnaOtomatisOn = val;
-                              });
+                              _updateAccessibility(val, isTTSOn);
                             },
                           ),
                           _buildDivider(colors),
                           _buildSwitchItem(
                             title: 'Text-to-Speech (TTS)',
-                            value: _isTTSOn,
+                            value: isTTSOn,
                             colors: colors,
                             onChanged: (val) {
-                              setState(() {
-                                _isTTSOn = val;
-                              });
+                              _updateAccessibility(isLabelWarnaOn, val);
                             },
                           ),
                         ],
@@ -263,7 +328,7 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                           _buildDivider(colors),
                           _buildMenuItem(
                             title: 'Ukuran Teks',
-                            trailingText: 'Normal',
+                            trailingText: textScaleStr,
                             colors: colors,
                             onTap: () {
                               Navigator.push(
@@ -297,35 +362,6 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
                   ],
                 ),
               ),
-            ),
-
-            // ── Bottom Navbar ──────────────────────────────────────────────
-            BottomNavbar(
-              currentIndex: 4,
-              onTap: (index) {
-                if (index == 0) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeDashboardOnScreen()),
-                    (route) => false,
-                  );
-                } else if (index == 1) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PaletWarnaScreen()),
-                  );
-                } else if (index == 2) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ColorIdentifierScreen()),
-                  );
-                } else if (index == 3) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TersimpanScreen()),
-                  );
-                }
-              },
             ),
           ],
         ),

@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
 import 'package:colorsense/widgets/option_card.dart';
-import 'package:colorsense/screens/onboarding/tes_ishihara_screen.dart';
-import 'package:colorsense/screens/onboarding/keparahan_screen.dart';
-import 'package:colorsense/screens/onboarding/preferensi_screen.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 03 - Pilih Tipe CB  |  Figma node: 4:39
 // -----------------------------------------------------------------------------
 
-class PilihTipeCbScreen extends StatefulWidget {
+class PilihTipeCbScreen extends ConsumerStatefulWidget {
   const PilihTipeCbScreen({super.key});
 
   @override
-  State<PilihTipeCbScreen> createState() => _PilihTipeCbScreenState();
+  ConsumerState<PilihTipeCbScreen> createState() => _PilihTipeCbScreenState();
 }
 
-class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
+class _PilihTipeCbScreenState extends ConsumerState<PilihTipeCbScreen> {
   // We store selected index.
-  int _selectedIndex = 3; // Default 'Belum tahu' is selected in design
+  int _selectedIndex = -1; // Default to no selection
 
   final List<Map<String, String>> _options = [
     {
@@ -120,27 +121,25 @@ class _PilihTipeCbScreenState extends State<PilihTipeCbScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    if (_selectedIndex == -1) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Pilih salah satu kondisi terlebih dahulu.')),
+                      );
+                      return;
+                    }
+
+                    final selectedTitle = _options[_selectedIndex]['title']!;
+                    ref.read(userPreferencesProvider.notifier).setCbType(selectedTitle);
+
                     if (_selectedIndex == 3) {
                       // 3 is "Belum tahu"
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const TesIshiharaScreen(),
-                        ),
-                      );
+                      context.push('/tes-ishihara');
                     } else if (_selectedIndex == 0 || _selectedIndex == 1) {
-                      // 0: Tritanopia, 1: Deuteranopia/Protanopia -> Keparahan
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const KeparahanScreen(),
-                        ),
-                      );
+                      // 0, 1: CB Types -> Keparahan
+                      context.push('/keparahan');
                     } else {
                       // 2: Achromatopsia, 4: Normal -> Preferensi
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const PreferensiScreen(),
-                        ),
-                      );
+                      context.push('/preferensi');
                     }
                   },
                   child: const Text('Lanjut \u2192'), // Lanjut ->

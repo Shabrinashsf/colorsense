@@ -1,21 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/providers/saved_colors_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 12 - Detail Warna | Figma node: 99:49
 // -----------------------------------------------------------------------------
 
-class DetailWarnaScreen extends StatelessWidget {
+import 'dart:typed_data';
+
+class DetailWarnaScreen extends ConsumerWidget {
   final bool isFromSaved;
+  final String colorName;
+  final String hexColor;
+  final Uint8List? sourceImageBytes;
 
   const DetailWarnaScreen({
     super.key,
     this.isFromSaved = false,
+    this.colorName = 'Biru Cobalt',
+    this.hexColor = '#0047AB',
+    this.sourceImageBytes,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int parsedColorValue = int.tryParse(hexColor.replaceAll('#', '0xFF')) ?? 0xFF0047AB;
+    final Color actualColor = Color(parsedColorValue);
+    
+    // Calculate RGB
+    final int r = actualColor.r.toInt();
+    final int g = actualColor.g.toInt();
+    final int b = actualColor.b.toInt();
+    final String rgbStr = '$r, $g, $b';
+
+    // Calculate HSL
+    final hsl = HSLColor.fromColor(actualColor);
+    final String hslStr = '${hsl.hue.round()}°, ${(hsl.saturation * 100).round()}%, ${(hsl.lightness * 100).round()}%';
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -62,11 +85,11 @@ class DetailWarnaScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       alignment: Alignment.bottomLeft,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0047AB),
+                        color: actualColor,
                         borderRadius: BorderRadius.circular(13),
                       ),
                       child: Text(
-                        'Biru Cobalt',
+                        colorName,
                         style: context.textStyles.headlineLarge.copyWith(
                           fontSize: 14,
                         ),
@@ -94,52 +117,15 @@ class DetailWarnaScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildColorValue(context, label: 'HEX', value: '#0047AB'),
-                          _buildColorValue(context, label: 'RGB', value: '41,128,185'),
-                          _buildColorValue(context, label: 'HSL', value: '204-78-44'),
+                          _buildColorValue(context, label: 'HEX', value: hexColor),
+                          _buildColorValue(context, label: 'RGB', value: rgbStr),
+                          _buildColorValue(context, label: 'HSL', value: hslStr),
                         ],
                       ),
                     ),
                     const SizedBox(height: 10),
 
-                    // ── Foto Hasil Scan ────────────────────────────────────
-                    Text(
-                      'FOTO HASIL SCAN',
-                      style: context.textStyles.labelXSmall.copyWith(
-                        color: context.colors.textLabel,
-                        fontSize: 8,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      height: 138,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: context.colors.surfaceSecondary,
-                        border: Border.all(color: context.colors.borderDefault),
-                        borderRadius: BorderRadius.circular(11),
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: 135,
-                          height: 100,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0047AB),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            'OBJEK',
-                            style: context.textStyles.headlineMedium.copyWith(
-                              fontSize: 11,
-                              color: context.colors.textMuted,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
+
 
                     // ── Tampak Oleh Tipe Buta Warna Lain ───────────────────
                     Text(
@@ -237,7 +223,7 @@ class DetailWarnaScreen extends StatelessWidget {
                       flex: 128,
                       child: GestureDetector(
                         onTap: () {
-                          // TODO: Handle simpan
+                          ref.read(savedColorsProvider.notifier).saveColor(colorName, hexColor);
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Warna disimpan!')),
                           );

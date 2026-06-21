@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:colorsense/screens/onboarding/onboarding_welcome_screen.dart';
 import 'package:colorsense/theme/app_theme.dart';
@@ -40,11 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const OnboardingWelcomeScreen(),
-          ),
-        );
+        context.go('/welcome');
       }
     });
 

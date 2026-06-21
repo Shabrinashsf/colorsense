@@ -1,14 +1,106 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:camera/camera.dart';
+import 'package:image/image.dart' as img;
+
+import 'package:colorsense/main.dart'; // for globalCameras
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
+import 'package:colorsense/utils/color_dictionary.dart';
+import 'package:colorsense/providers/bottom_nav_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 11 - Color Identifier | Figma node: 6:129
 // -----------------------------------------------------------------------------
 
-class ColorIdentifierScreen extends StatelessWidget {
+class ColorIdentifierScreen extends ConsumerStatefulWidget {
   const ColorIdentifierScreen({super.key});
+
+  @override
+  ConsumerState<ColorIdentifierScreen> createState() => _ColorIdentifierScreenState();
+}
+
+class _ColorIdentifierScreenState extends ConsumerState<ColorIdentifierScreen> {
+  CameraController? _cameraController;
+  bool _isProcessing = false;
+  String? _cameraError;
+
+  @override
+  void initState() {
+    super.initState();
+    _initCamera();
+  }
+
+  Future<void> _initCamera() async {
+    try {
+      if (globalCameras.isEmpty) {
+        setState(() => _cameraError = 'Kamera tidak ditemukan di perangkat ini.');
+        return;
+      }
+      final camera = globalCameras.first;
+      _cameraController = CameraController(
+        camera,
+        ResolutionPreset.medium,
+        enableAudio: false,
+      );
+      await _cameraController!.initialize();
+      if (mounted) setState(() {});
+    } catch (e) {
+      if (mounted) setState(() => _cameraError = 'Gagal mengakses kamera: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  Future<void> _captureAndIdentify() async {
+    if (_cameraController == null || !_cameraController!.value.isInitialized) return;
+    if (_isProcessing) return;
+
+    setState(() => _isProcessing = true);
+
+    try {
+      final XFile picture = await _cameraController!.takePicture();
+      final bytes = await picture.readAsBytes();
+      
+      // Decode image
+      img.Image? decodedImage = img.decodeImage(bytes);
+      if (decodedImage != null) {
+        // Get center pixel
+        final centerX = decodedImage.width ~/ 2;
+        final centerY = decodedImage.height ~/ 2;
+        final pixel = decodedImage.getPixel(centerX, centerY);
+        
+        final r = pixel.r.toInt();
+        final g = pixel.g.toInt();
+        final b = pixel.b.toInt();
+
+        final colorName = ColorDictionary.getClosestColorName(r, g, b);
+        final hexColor = '#${r.toRadixString(16).padLeft(2, '0')}${g.toRadixString(16).padLeft(2, '0')}${b.toRadixString(16).padLeft(2, '0')}'.toUpperCase();
+
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailWarnaScreen(
+                colorName: colorName,
+                hexColor: hexColor,
+                sourceImageBytes: bytes, // Optional: pass image
+              ),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error capturing color: $e');
+    } finally {
+      if (mounted) setState(() => _isProcessing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +116,31 @@ class ColorIdentifierScreen extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                // Simulated Camera Feed (Placeholder)
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  color: const Color(0xFF2C2C2C), // Dark grey placeholder
-                  child: Center(
-                    child: Text(
-                      'Camera Feed',
-                      style: context.textStyles.bodyMedium.copyWith(
-                        color: Colors.white54,
-                      ),
+                // Camera Feed
+                if (_cameraController != null && _cameraController!.value.isInitialized)
+                  SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: CameraPreview(_cameraController!),
+                  )
+                else
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: const Color(0xFF2C2C2C), // Dark grey placeholder
+                    child: Center(
+                      child: _cameraError != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(
+                                _cameraError!,
+                                style: const TextStyle(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          : const CircularProgressIndicator(),
                     ),
                   ),
-                ),
 
                 // Viewfinder Mask Overlay
                 SizedBox(
@@ -68,9 +171,14 @@ class ColorIdentifierScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Back Button
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () {
+                            if (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            } else {
+                              ref.read(bottomNavIndexProvider.notifier).setIndex(0);
+                            }
+                          },
                           child: SvgPicture.asset(
                             'assets/icons/ic_arrow_left_circle.svg',
                             width: 24,
@@ -266,9 +374,7 @@ class ColorIdentifierScreen extends StatelessWidget {
 
                     // Shutter Button
                     GestureDetector(
-                      onTap: () {
-                        // Action for taking photo or identifying color
-                      },
+                      onTap: _isProcessing ? null : _captureAndIdentify,
                       child: SvgPicture.asset(
                         'assets/icons/ic_shutter.svg',
                         width: 54,

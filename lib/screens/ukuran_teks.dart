@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 21 - Ukuran Teks | Figma node: 13:85
 // -----------------------------------------------------------------------------
 
-class UkuranTeksScreen extends StatefulWidget {
+class UkuranTeksScreen extends ConsumerStatefulWidget {
   const UkuranTeksScreen({super.key});
 
   @override
-  State<UkuranTeksScreen> createState() => _UkuranTeksScreenState();
+  ConsumerState<UkuranTeksScreen> createState() => _UkuranTeksScreenState();
 }
 
-class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
+class _UkuranTeksScreenState extends ConsumerState<UkuranTeksScreen> {
   int _selectedSizeIndex = 1; // Default to Normal
   bool _ikutiSistem = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userPrefs = ref.read(userPreferencesProvider);
+      setState(() {
+        if (userPrefs.textScale == -1.0) {
+          _ikutiSistem = true;
+          _selectedSizeIndex = 1; // visual default
+        } else if (userPrefs.textScale == 0.8) {
+          _selectedSizeIndex = 0;
+        } else if (userPrefs.textScale == 1.2) {
+          _selectedSizeIndex = 2;
+        } else if (userPrefs.textScale == 1.4) {
+          _selectedSizeIndex = 3;
+        } else {
+          _selectedSizeIndex = 1;
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +248,19 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
               padding: const EdgeInsets.fromLTRB(AppSpacing.screenH, 10, AppSpacing.screenH, 20),
               child: GestureDetector(
                 onTap: () {
+                  double scale;
+                  if (_ikutiSistem) {
+                    scale = -1.0;
+                  } else {
+                    switch (_selectedSizeIndex) {
+                      case 0: scale = 0.8; break;
+                      case 1: scale = 1.0; break;
+                      case 2: scale = 1.2; break;
+                      case 3: scale = 1.4; break;
+                      default: scale = 1.0; break;
+                    }
+                  }
+                  ref.read(userPreferencesProvider.notifier).setTextScale(scale);
                   Navigator.of(context).pop();
                 },
                 child: Container(
@@ -261,7 +298,7 @@ class _UkuranTeksScreenState extends State<UkuranTeksScreen> {
     final textColor = isSelected ? const Color(0xFF9D97FF) : const Color(0xFFD0D0F0);
 
     return GestureDetector(
-      onTap: () {
+      onTap: _ikutiSistem ? null : () {
         setState(() {
           _selectedSizeIndex = index;
         });

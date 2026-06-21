@@ -214,45 +214,6 @@ class _PaletWarnaScreenState extends State<PaletWarnaScreen> {
                 ],
               ),
             ),
-
-            // ── Bottom Navbar ────────────────────────────────────────
-            BottomNavbar(
-              currentIndex: 1, // Palet is index 1
-              onTap: (index) {
-                if (index == 0) {
-                  // Back to Home
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeDashboardOnScreen(),
-                    ),
-                    (route) => false,
-                  );
-                } else if (index == 2) {
-                  // To Kamera
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ColorIdentifierScreen(),
-                    ),
-                  );
-                } else if (index == 3) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TersimpanScreen(),
-                    ),
-                  );
-                } else if (index == 4) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PengaturanScreen(),
-                    ),
-                  );
-                }
-              },
-            ),
           ],
         ),
       ),

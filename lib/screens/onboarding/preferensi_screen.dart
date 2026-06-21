@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
-import 'package:colorsense/screens/onboarding/izin_kamera_screen.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 07 - Preferensi  |  Figma node: 4:154
 // -----------------------------------------------------------------------------
 
-class PreferensiScreen extends StatefulWidget {
+class PreferensiScreen extends ConsumerStatefulWidget {
   const PreferensiScreen({super.key});
 
   @override
-  State<PreferensiScreen> createState() => _PreferensiScreenState();
+  ConsumerState<PreferensiScreen> createState() => _PreferensiScreenState();
 }
 
-class _PreferensiScreenState extends State<PreferensiScreen> {
-  bool _isLabelWarnaActive = true;
+class _PreferensiScreenState extends ConsumerState<PreferensiScreen> {
+  bool _isLabelWarnaActive = false;
   bool _isTtsActive = false;
 
   @override
@@ -123,12 +126,20 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
                       return;
                     }
                     
+                    String option = '';
+                    if (_isLabelWarnaActive && _isTtsActive) {
+                      option = 'Keduanya';
+                    } else if (_isLabelWarnaActive) {
+                      option = 'Label Warna';
+                    } else {
+                      option = 'Text-to-Speech';
+                    }
+                    
+                    ref.read(userPreferencesProvider.notifier).setAccessibilityOption(option);
+                    ref.read(userPreferencesProvider.notifier).setFilterMode(false); // Default OFF
+                    
                     // Navigate to 08 - Izin Kamera
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const IzinKameraScreen(),
-                      ),
-                    );
+                    context.push('/izin-kamera');
                   },
                   child: const Text('Selesai'),
                 ),
@@ -207,7 +218,7 @@ class _PreferensiScreenState extends State<PreferensiScreen> {
             child: CupertinoSwitch(
               value: isActive,
               activeTrackColor: AppColors.primary,
-              inactiveTrackColor: const Color(0xFF3B368A),
+              inactiveTrackColor: context.colors.borderDefault,
               onChanged: onChanged,
             ),
           ),

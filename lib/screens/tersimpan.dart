@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:colorsense/widgets/bottom_navbar.dart';
-import 'package:colorsense/screens/home_dashboard_on.dart';
-import 'package:colorsense/screens/palet_warna.dart';
-import 'package:colorsense/screens/color_identifier_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/providers/saved_colors_provider.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
-import 'package:colorsense/screens/pengaturan.dart';
 
 // -----------------------------------------------------------------------------
 // 17 - Tersimpan | Figma node: 12:258
 // -----------------------------------------------------------------------------
 
-class TersimpanScreen extends StatefulWidget {
+class TersimpanScreen extends ConsumerStatefulWidget {
   const TersimpanScreen({super.key});
 
   @override
-  State<TersimpanScreen> createState() => _TersimpanScreenState();
+  ConsumerState<TersimpanScreen> createState() => _TersimpanScreenState();
 }
 
-class _TersimpanScreenState extends State<TersimpanScreen> {
-  int _selectedFilterIndex = 0; // 0: Semua, 1: Minggu ini, 2: Bulan ini
-  bool _isFavoritActive = false;
+class _TersimpanScreenState extends ConsumerState<TersimpanScreen> {
+  int _selectedFilterIndex = 1; // 0: Favorit, 1: Semua, 2: Minggu ini, 3: Bulan ini
 
   final List<String> _filters = [
+    'Favorit',
     'Semua',
     'Minggu ini',
     'Bulan Ini',
@@ -30,6 +30,11 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final allSavedColors = ref.watch(savedColorsProvider);
+    final savedColors = _selectedFilterIndex == 0
+        ? allSavedColors.where((c) => c.isFavorite).toList()
+        : allSavedColors;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,188 +62,103 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                   // ── Filter Chips ─────────────────────────────────────────
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenH),
-                    child: Row(
-                      children: [
-                        // Favorit Toggle
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isFavoritActive = !_isFavoritActive;
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _isFavoritActive
-                                  ? AppColors.primary.withValues(alpha: 0.15)
-                                  : AppColors.surfaceSecondary,
-                              border: Border.all(
-                                color: _isFavoritActive
-                                    ? AppColors.primary.withValues(alpha: 0.3)
-                                    : const Color(0xFF1E1E30),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(_filters.length, (index) {
+                          final isActive = index == _selectedFilterIndex;
+                          
+                          // Build chip
+                          Widget chip = GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedFilterIndex = index;
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: index == 0 ? 0 : 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 6,
                               ),
-                              borderRadius: BorderRadius.circular(11),
-                            ),
-                            child: Text(
-                              'Favorit',
-                              style: context.textStyles.labelMedium.copyWith(
-                                color: _isFavoritActive
-                                    ? const Color(0xFF9D97FF)
-                                    : const Color(0xFFAFADDF),
-                                fontSize: 9,
+                              decoration: BoxDecoration(
+                                color: isActive
+                                    ? AppColors.primary.withValues(alpha: 0.14)
+                                    : Colors.white.withValues(alpha: 0.04),
+                                border: Border.all(
+                                  color: isActive
+                                      ? AppColors.primary.withValues(alpha: 0.3)
+                                      : Colors.white.withValues(alpha: 0.05),
+                                ),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Text(
+                                _filters[index],
+                                style: context.textStyles.labelMedium.copyWith(
+                                  color: isActive
+                                      ? const Color(0xFF9D97FF)
+                                      : const Color(0xFF606080),
+                                  fontSize: 9,
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        
-                        // Divider
-                        Container(
-                          width: 1,
-                          height: 22,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          color: context.colors.borderDefault,
-                        ),
+                          );
 
-                        // Time Filters
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(_filters.length, (index) {
-                                final isSelected = index == _selectedFilterIndex;
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedFilterIndex = index;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(right: 5),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 14,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? AppColors.primary.withValues(alpha: 0.15)
-                                          : AppColors.surfaceSecondary,
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? AppColors.primary.withValues(alpha: 0.3)
-                                            : const Color(0xFF1E1E30),
-                                      ),
-                                      borderRadius: BorderRadius.circular(11),
-                                    ),
-                                    child: Text(
-                                      _filters[index],
-                                      style: context.textStyles.labelMedium.copyWith(
-                                        color: isSelected
-                                            ? const Color(0xFF9D97FF)
-                                            : const Color(0xFFAFADDF),
-                                        fontSize: 9,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
-                          ),
-                        ),
-                      ],
+                          // If it's the Favorit chip (index 0), append a divider
+                          if (index == 0) {
+                            return Row(
+                              children: [
+                                chip,
+                                Container(
+                                  width: 1,
+                                  height: 12,
+                                  color: context.colors.borderDefault,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                                ),
+                              ],
+                            );
+                          }
+
+                          return chip;
+                        }),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),
 
                   // ── Saved Items List ─────────────────────────────────────
                   Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenH),
-                      children: [
-                        _buildSavedItem(
-                          color: const Color(0xFF0047AB),
-                          title: 'Biru Cobalt',
-                          hexCode: '#0047AB',
-                          time: '2m',
-                          isFavorited: true,
-                        ),
-                        const SizedBox(height: 5),
-                        _buildSavedItem(
-                          color: const Color(0xFF50C878),
-                          title: 'Hijau Emerald',
-                          hexCode: '#50C878',
-                          time: '1j',
-                          isFavorited: false,
-                        ),
-                        const SizedBox(height: 5),
-                        _buildSavedItem(
-                          color: const Color(0xFFE67E22),
-                          title: 'Oranye Carrot',
-                          hexCode: '#E67E22',
-                          time: '3j',
-                          isFavorited: false,
-                        ),
-                        const SizedBox(height: 5),
-                        _buildSavedItem(
-                          color: const Color(0xFF9966CC),
-                          title: 'Ungu Amethyst',
-                          hexCode: '#9966CC',
-                          time: 'Kmrn',
-                          isFavorited: true,
-                        ),
-                        const SizedBox(height: 5),
-                        _buildSavedItem(
-                          color: const Color(0xFFE32636),
-                          title: 'Merah Alizarin',
-                          hexCode: '#E32636',
-                          time: '2hr',
-                          isFavorited: false,
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
+                    child: savedColors.isEmpty 
+                      ? Center(
+                          child: Text(
+                            _selectedFilterIndex == 0 ? "Belum ada warna favorit" : "Belum ada warna tersimpan",
+                            style: context.textStyles.bodyMedium.copyWith(color: context.colors.textMuted),
+                          )
+                        ) 
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenH),
+                          itemCount: savedColors.length,
+                          itemBuilder: (context, index) {
+                            final colorItem = savedColors[index];
+                            final int parsedColorValue = int.tryParse(colorItem.hex.replaceAll('#', '0xFF')) ?? 0xFF000000;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: _buildSavedItem(
+                                color: Color(parsedColorValue),
+                                title: colorItem.name,
+                                hexCode: colorItem.hex,
+                                time: 'Baru',
+                                isFavorited: colorItem.isFavorite,
+                                onFavoriteToggle: () {
+                                  ref.read(savedColorsProvider.notifier).toggleFavorite(colorItem.hex);
+                                },
+                              ),
+                            );
+                          },
+                      ),
                   ),
                 ],
               ),
-            ),
-
-            // ── Bottom Navbar ──────────────────────────────────────────────
-            BottomNavbar(
-              currentIndex: 3, // Simpan is index 3
-              onTap: (index) {
-                if (index == 0) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeDashboardOnScreen(),
-                    ),
-                    (route) => false,
-                  );
-                } else if (index == 1) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PaletWarnaScreen(),
-                    ),
-                  );
-                } else if (index == 2) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ColorIdentifierScreen(),
-                    ),
-                  );
-                } else if (index == 4) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PengaturanScreen(),
-                    ),
-                  );
-                }
-              },
             ),
           ],
         ),
@@ -252,13 +172,18 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
     required String hexCode,
     required String time,
     required bool isFavorited,
+    required VoidCallback onFavoriteToggle,
   }) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const DetailWarnaScreen(isFromSaved: true),
+            builder: (context) => DetailWarnaScreen(
+              isFromSaved: true,
+              colorName: title,
+              hexColor: hexCode,
+            ),
           ),
         );
       },
@@ -318,10 +243,17 @@ class _TersimpanScreenState extends State<TersimpanScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Icon(
-                      isFavorited ? Icons.star : Icons.star_border,
-                      color: const Color(0xFFFFC663),
-                      size: 15,
+                    GestureDetector(
+                      onTap: onFavoriteToggle,
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          isFavorited ? Icons.star : Icons.star_border,
+                          color: const Color(0xFFFFC663),
+                          size: 18,
+                        ),
+                      ),
                     ),
                   ],
                 ),

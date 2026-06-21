@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/step_indicator.dart';
-import 'package:colorsense/screens/onboarding/pilih_tipe_cb_screen.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
 
 // -----------------------------------------------------------------------------
 // 02 - Onboarding Welcome  |  Figma node: 4:22
 // -----------------------------------------------------------------------------
 
-class OnboardingWelcomeScreen extends StatefulWidget {
+class OnboardingWelcomeScreen extends ConsumerStatefulWidget {
   const OnboardingWelcomeScreen({super.key});
 
   @override
-  State<OnboardingWelcomeScreen> createState() =>
+  ConsumerState<OnboardingWelcomeScreen> createState() =>
       _OnboardingWelcomeScreenState();
 }
 
-class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
+class _OnboardingWelcomeScreenState extends ConsumerState<OnboardingWelcomeScreen> {
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -110,7 +113,7 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
                   color: context.colors.textPrimary,
                 ),
                 decoration: const InputDecoration(
-                  hintText: 'Nama kamu (opsional)',
+                  hintText: 'Nama kamu',
                 ),
               ),
 
@@ -119,11 +122,15 @@ class _OnboardingWelcomeScreenState extends State<OnboardingWelcomeScreen> {
               // ── Primary Button ───────────────────────────────────────
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const PilihTipeCbScreen(),
-                    ),
-                  );
+                  final name = _nameController.text.trim();
+                  if (name.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Silakan masukkan nama kamu terlebih dahulu')),
+                    );
+                    return;
+                  }
+                  ref.read(userPreferencesProvider.notifier).setUserName(name);
+                  context.push('/pilih-tipe');
                 },
                 child: const Text('Mulai \u2192'), // Mulai ->
               ),

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:camera/camera.dart';
+
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:colorsense/screens/home_dashboard_off.dart';
+import 'package:colorsense/providers/user_preferences_provider.dart';
+import 'package:colorsense/main.dart';
 
 // -----------------------------------------------------------------------------
 // 08 - Izin Kamera  |  Figma node: 6:2
 // -----------------------------------------------------------------------------
 
-class IzinKameraScreen extends StatelessWidget {
+class IzinKameraScreen extends ConsumerWidget {
   const IzinKameraScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -96,14 +102,20 @@ class IzinKameraScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to 10 - Home Dashboard (Mode OFF) by default
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (_) => const HomeDashboardOffScreen(),
-                      ),
-                      (route) => false, // Remove all previous routes since Onboarding is done
-                    );
+                  onPressed: () async {
+                    // Try to request camera access
+                    try {
+                      globalCameras = await availableCameras();
+                    } catch (e) {
+                      globalCameras = [];
+                    }
+
+                    if (!context.mounted) return;
+                    
+                    // Mark onboarding complete
+                    ref.read(userPreferencesProvider.notifier).completeOnboarding();
+                    // Navigate to home
+                    context.go('/home');
                   },
                   child: const Text('Izinkan Akses Kamera'),
                 ),
@@ -114,13 +126,10 @@ class IzinKameraScreen extends StatelessWidget {
               // ── Text Button ──────────────────────────────────────────
               GestureDetector(
                 onTap: () {
-                  // Navigate to 10 - Home Dashboard (Mode OFF) by default
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (_) => const HomeDashboardOffScreen(),
-                    ),
-                    (route) => false,
-                  );
+                  // Mark onboarding complete
+                  ref.read(userPreferencesProvider.notifier).completeOnboarding();
+                  // Navigate to home
+                  context.go('/home');
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),

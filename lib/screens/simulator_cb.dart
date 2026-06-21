@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
+import 'package:colorsense/utils/color_filters.dart';
 
 // -----------------------------------------------------------------------------
 // 19 - Simulator CB | Figma node: 13:2
@@ -84,20 +85,11 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
                         children: [
                           _buildColorWheel(
                             title: 'Warna Asli',
-                            colors: [
-                              Colors.red,
-                              Colors.orange,
-                              Colors.yellow,
-                              Colors.green,
-                              Colors.blue,
-                              Colors.indigo,
-                              Colors.purple,
-                              Colors.red,
-                            ],
+                            matrix: ColorFilters.normal,
                           ),
                           _buildColorWheel(
                             title: _getTypeName(_selectedTypeIndex),
-                            colors: _getSimulatedColors(_selectedTypeIndex),
+                            matrix: _getFilterMatrix(_selectedTypeIndex),
                           ),
                         ],
                       ),
@@ -128,55 +120,6 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    // ── Tingkat Keparahan ──────────────────────────────────
-                    _buildSectionTitle('TINGKAT KEPARAHAN'),
-                    SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        activeTrackColor: const Color(0xFF00D9A3), // Using solid active track for now
-                        inactiveTrackColor: context.colors.borderDefault,
-                        thumbColor: AppColors.primary,
-                        trackHeight: 5,
-                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
-                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7.0),
-                      ),
-                      child: Slider(
-                        value: _severityValue,
-                        onChanged: (val) {
-                          setState(() {
-                            _severityValue = val;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Ringan',
-                            style: context.textStyles.bodySmall.copyWith(
-                              color: context.colors.textMuted,
-                              fontSize: 8,
-                            ),
-                          ),
-                          Text(
-                            'Sedang',
-                            style: context.textStyles.labelMedium.copyWith(
-                              color: context.colors.textLabel,
-                              fontSize: 8,
-                            ),
-                          ),
-                          Text(
-                            'Berat',
-                            style: context.textStyles.bodySmall.copyWith(
-                              color: context.colors.textMuted,
-                              fontSize: 8,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -226,16 +169,28 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
     );
   }
 
-  Widget _buildColorWheel({required String title, required List<Color> colors}) {
+  Widget _buildColorWheel({required String title, required List<double> matrix}) {
     return Column(
       children: [
-        Container(
-          width: 101,
-          height: 101,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: SweepGradient(
-              colors: colors,
+        ColorFiltered(
+          colorFilter: ColorFilter.matrix(matrix),
+          child: Container(
+            width: 101,
+            height: 101,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: SweepGradient(
+                colors: [
+                  Colors.red,
+                  Colors.orange,
+                  Colors.yellow,
+                  Colors.green,
+                  Colors.blue,
+                  Colors.indigo,
+                  Colors.purple,
+                  Colors.red,
+                ],
+              ),
             ),
           ),
         ),
@@ -345,42 +300,15 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
     }
   }
 
-  List<Color> _getSimulatedColors(int index) {
+  List<double> _getFilterMatrix(int index) {
     switch (index) {
-      case 0: // Tritanopia
-        return [
-          const Color(0xFFE93466),
-          const Color(0xFFE93466),
-          const Color(0xFFF9A8AE),
-          const Color(0xFF88C8D2),
-          const Color(0xFF1596A9),
-          const Color(0xFF1596A9),
-          const Color(0xFF1596A9),
-          const Color(0xFFE93466),
-        ];
-      case 1: // Deuteranopia / Protanopia
-        return [
-          const Color(0xFF91863E),
-          const Color(0xFFEAE27E),
-          const Color(0xFFEAE27E),
-          const Color(0xFFEAE27E),
-          const Color(0xFF285698),
-          const Color(0xFF285698),
-          const Color(0xFF285698),
-          const Color(0xFF91863E),
-        ];
-      case 2: // Achromatopsia
+      case 0:
+        return ColorFilters.tritanopia;
+      case 1:
+        return ColorFilters.deuteranopia;
+      case 2:
       default:
-        return [
-          Colors.grey.shade800,
-          Colors.grey.shade600,
-          Colors.grey.shade400,
-          Colors.grey.shade500,
-          Colors.grey.shade700,
-          Colors.grey.shade900,
-          Colors.grey.shade800,
-          Colors.grey.shade800,
-        ];
+        return ColorFilters.achromatopsia;
     }
   }
 }

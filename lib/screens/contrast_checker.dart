@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/screens/color_identifier_screen.dart';
+import 'package:colorsense/utils/wcag_checker.dart';
 
 // -----------------------------------------------------------------------------
 // 14 - Contrast Checker | Figma node: 12:104
@@ -20,10 +21,18 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
   InputMode _leftMode = InputMode.type;
   InputMode _rightMode = InputMode.type;
 
-  final Color _leftColor = const Color(0xFFF0F0FF);
-  final Color _rightColor = const Color(0xFF2980B9);
+  Color _leftColor = const Color(0xFFF0F0FF);
+  Color _rightColor = const Color(0xFF2980B9);
 
   bool _showResult = false;
+  double _contrastRatio = 1.0;
+
+  void _calculateContrast() {
+    setState(() {
+      _contrastRatio = WcagChecker.getContrastRatio(_leftColor, _rightColor);
+      _showResult = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +120,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: _buildInputControl(
                       color: _leftColor,
-                      hexText: '#F0F0FF',
+                      hexText: '#${_leftColor.value.toRadixString(16).substring(2).toUpperCase()}',
                       currentMode: _leftMode,
                       onModeChanged: (mode) {
                         setState(() {
@@ -124,7 +133,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                   Expanded(
                     child: _buildInputControl(
                       color: _rightColor,
-                      hexText: '#2980B9',
+                      hexText: '#${_rightColor.value.toRadixString(16).substring(2).toUpperCase()}',
                       currentMode: _rightMode,
                       onModeChanged: (mode) {
                         setState(() {
@@ -139,11 +148,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
 
               // ── Check Button ───────────────────────────────────────
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showResult = true;
-                  });
-                },
+                onTap: _calculateContrast,
                 child: Container(
                   width: double.infinity,
                   height: 48,
@@ -184,7 +189,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                     children: [
                       // Rasio
                       Text(
-                        '5.8:1',
+                        '${_contrastRatio.toStringAsFixed(1)}:1',
                         style: context.textStyles.headlineLarge.copyWith(
                           fontSize: 28,
                         ),
@@ -199,11 +204,11 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
                       const SizedBox(height: 20),
 
                       // WCAG Rules
-                      _buildWcagRow('WCAG AA Normal (4.5:1)', true),
+                      _buildWcagRow('WCAG AA Normal (4.5:1)', _contrastRatio >= 4.5),
                       const SizedBox(height: 8),
-                      _buildWcagRow('WCAG AA Besar (3:1)', true),
+                      _buildWcagRow('WCAG AA Besar (3:1)', _contrastRatio >= 3.0),
                       const SizedBox(height: 8),
-                      _buildWcagRow('WCAG AAA Normal (7:1)', false),
+                      _buildWcagRow('WCAG AAA Normal (7:1)', _contrastRatio >= 7.0),
                     ],
                   ),
                 ),

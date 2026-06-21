@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/widgets/ishihara_option_button.dart';
 import 'package:colorsense/screens/onboarding/hasil_tes_screen.dart';
@@ -19,7 +20,9 @@ class IshiharaQuestion {
 }
 
 class TesIshiharaScreen extends StatefulWidget {
-  const TesIshiharaScreen({super.key});
+  final bool isRetake;
+
+  const TesIshiharaScreen({super.key, this.isRetake = false});
 
   @override
   State<TesIshiharaScreen> createState() => _TesIshiharaScreenState();
@@ -93,11 +96,16 @@ class _TesIshiharaScreenState extends State<TesIshiharaScreen> {
       }
 
       // Finished 8 questions -> Navigate to 05 - Hasil Tes
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => HasilTesScreen(tipe: dummyResult),
-        ),
-      );
+      if (widget.isRetake) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HasilTesScreen(tipe: dummyResult, isRetake: true),
+          ),
+        );
+      } else {
+        context.go('/hasil-tes', extra: dummyResult);
+      }
     }
   }
 
