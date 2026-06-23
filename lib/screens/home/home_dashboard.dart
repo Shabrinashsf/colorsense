@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
-import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/providers/user_preferences_provider.dart';
 
 import 'package:colorsense/screens/home_dashboard_off.dart';

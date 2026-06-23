@@ -22,7 +22,7 @@ class DetailPaletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Generate hex codes dynamically
     final hexCodes = colors.map((c) {
-      return '#${c.value.toRadixString(16).substring(2).toUpperCase()}';
+      return '#${c.toARGB32().toRadixString(16).substring(2).toUpperCase()}';
     }).toList();
 
     return Scaffold(

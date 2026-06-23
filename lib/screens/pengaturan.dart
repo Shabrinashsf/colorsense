@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:colorsense/widgets/bottom_navbar.dart';
-import 'package:colorsense/screens/home_dashboard_on.dart';
-import 'package:colorsense/screens/color_identifier_screen.dart';
-import 'package:colorsense/screens/palet_warna.dart';
-import 'package:colorsense/screens/tersimpan.dart';
 import 'package:colorsense/screens/filter_mode.dart';
 import 'package:colorsense/screens/ukuran_teks.dart';
 import 'package:colorsense/screens/keparahan_settings.dart';
@@ -165,8 +160,9 @@ class _PengaturanScreenState extends ConsumerState<PengaturanScreen> {
     final bool isTTSOn = userPrefs.accessibilityOption == 'Text-to-Speech' || userPrefs.accessibilityOption == 'Keduanya';
     
     String textScaleStr = 'Normal';
-    if (userPrefs.textScale == -1.0) textScaleStr = 'Ikuti Sistem';
-    else if (userPrefs.textScale == 0.8) textScaleStr = 'Kecil';
+    if (userPrefs.textScale == -1.0) {
+      textScaleStr = 'Ikuti Sistem';
+    } else if (userPrefs.textScale == 0.8) textScaleStr = 'Kecil';
     else if (userPrefs.textScale == 1.2) textScaleStr = 'Besar';
     else if (userPrefs.textScale == 1.4) textScaleStr = 'Sangat Besar';
 

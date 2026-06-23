@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/providers/saved_colors_provider.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
 

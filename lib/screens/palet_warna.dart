@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:colorsense/theme/app_theme.dart';
-import 'package:colorsense/widgets/bottom_navbar.dart';
-import 'package:colorsense/screens/home_dashboard_on.dart';
-import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_palet.dart';
-import 'package:colorsense/screens/tersimpan.dart';
-import 'package:colorsense/screens/pengaturan.dart';
 
 // -----------------------------------------------------------------------------
 // 15 - Palet Warna | Figma node: 12:150

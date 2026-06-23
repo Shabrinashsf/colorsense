@@ -34,8 +34,9 @@ class _FilterModeScreenState extends ConsumerState<FilterModeScreen> {
       final userPrefs = ref.read(userPreferencesProvider);
       if (userPrefs.filterMode && userPrefs.filterModeName.isNotEmpty) {
         setState(() {
-          if (userPrefs.filterModeName == 'High Contrast') _selectedFilterIndex = 0;
-          else if (userPrefs.filterModeName == 'Soft Gray') _selectedFilterIndex = 1;
+          if (userPrefs.filterModeName == 'High Contrast') {
+            _selectedFilterIndex = 0;
+          } else if (userPrefs.filterModeName == 'Soft Gray') _selectedFilterIndex = 1;
           else if (userPrefs.filterModeName == 'Cool Contrast') _selectedFilterIndex = 2;
           else if (userPrefs.filterModeName == 'Warm Contrast') _selectedFilterIndex = 3;
         });
@@ -228,8 +229,9 @@ class _FilterModeScreenState extends ConsumerState<FilterModeScreen> {
                       onTap: () {
                         if (_selectedFilterIndex != -1) {
                           String filterName = '';
-                          if (_selectedFilterIndex == 0) filterName = 'High Contrast';
-                          else if (_selectedFilterIndex == 1) filterName = 'Soft Gray';
+                          if (_selectedFilterIndex == 0) {
+                            filterName = 'High Contrast';
+                          } else if (_selectedFilterIndex == 1) filterName = 'Soft Gray';
                           else if (_selectedFilterIndex == 2) filterName = 'Cool Contrast';
                           else if (_selectedFilterIndex == 3) filterName = 'Warm Contrast';
 

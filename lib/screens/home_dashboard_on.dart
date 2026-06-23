@@ -4,13 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/providers/bottom_nav_provider.dart';
 import 'package:colorsense/providers/user_preferences_provider.dart';
-import 'package:colorsense/widgets/bottom_navbar.dart';
-import 'package:colorsense/screens/color_identifier_screen.dart';
 import 'package:colorsense/screens/detail_warna_screen.dart';
 import 'package:colorsense/screens/contrast_checker.dart';
-import 'package:colorsense/screens/palet_warna.dart';
-import 'package:colorsense/screens/tersimpan.dart';
-import 'package:colorsense/screens/pengaturan.dart';
 import 'package:colorsense/screens/simulator_cb.dart';
 
 // -----------------------------------------------------------------------------

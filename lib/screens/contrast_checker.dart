@@ -42,7 +42,7 @@ class _ContrastCheckerScreenState extends State<ContrastCheckerScreen> {
     super.dispose();
   }
 
-  String _colorToHex(Color c) => '#${c.value.toRadixString(16).substring(2).toUpperCase()}';
+  String _colorToHex(Color c) => '#${c.toARGB32().toRadixString(16).substring(2).toUpperCase()}';
 
   void _updateColor(bool isLeft, Color newColor) {
     setState(() {

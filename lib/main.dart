@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:camera/camera.dart';
 
-import 'package:colorsense/screens/splash/splash_screen.dart';
 import 'package:colorsense/theme/app_theme.dart';
 import 'package:colorsense/providers/theme_provider.dart';
 import 'package:colorsense/providers/shared_prefs_provider.dart';

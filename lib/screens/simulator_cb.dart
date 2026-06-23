@@ -16,7 +16,6 @@ class SimulatorCBScreen extends StatefulWidget {
 
 class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
   int _selectedTypeIndex = 2; // Default to Achromatopsia
-  double _severityValue = 0.5; // Default to Sedang
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +38,14 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
                           child: SvgPicture.asset(
-                              'assets/icons/ic_arrow_left_circle.svg',
-                              width: 24,
-                              height: 24,
-                              colorFilter: ColorFilter.mode(
-                                context.colors.textPrimary,
-                                BlendMode.srcIn,
-                              ),
+                            'assets/icons/ic_arrow_left_circle.svg',
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              context.colors.textPrimary,
+                              BlendMode.srcIn,
                             ),
+                          ),
                         ),
                         const SizedBox(width: 10),
                         Column(
@@ -119,7 +118,6 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
                       iconColors: const [Colors.white, Color(0xFF4A4A4A)],
                     ),
                     const SizedBox(height: 20),
-
                   ],
                 ),
               ),
@@ -127,7 +125,12 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
 
             // ── Bottom Button ──────────────────────────────────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(AppSpacing.screenH, 10, AppSpacing.screenH, 20),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.screenH,
+                10,
+                AppSpacing.screenH,
+                20,
+              ),
               child: GestureDetector(
                 onTap: () {
                   // Handle Share
@@ -169,7 +172,10 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
     );
   }
 
-  Widget _buildColorWheel({required String title, required List<double> matrix}) {
+  Widget _buildColorWheel({
+    required String title,
+    required List<double> matrix,
+  }) {
     return Column(
       children: [
         ColorFiltered(
@@ -223,7 +229,9 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF161531) : AppColors.surfaceSecondary,
+          color: isSelected
+              ? const Color(0xFF161531)
+              : AppColors.surfaceSecondary,
           border: Border.all(
             color: isSelected ? AppColors.primary : const Color(0xFF1E1E30),
             width: 1.5,
@@ -277,7 +285,9 @@ class _SimulatorCBScreenState extends State<SimulatorCBScreen> {
                 shape: BoxShape.circle,
                 color: isSelected ? AppColors.primary : Colors.transparent,
                 border: Border.all(
-                  color: isSelected ? AppColors.primary : const Color(0xFF1E1E30),
+                  color: isSelected
+                      ? AppColors.primary
+                      : const Color(0xFF1E1E30),
                   width: 1.5,
                 ),
               ),

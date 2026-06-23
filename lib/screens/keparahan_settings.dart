@@ -25,8 +25,9 @@ class _KeparahanSettingsScreenState extends ConsumerState<KeparahanSettingsScree
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final userPrefs = ref.read(userPreferencesProvider);
       setState(() {
-        if (userPrefs.severity == 'Ringan') _selectedSeverityIndex = 0;
-        else if (userPrefs.severity == 'Berat') _selectedSeverityIndex = 2;
+        if (userPrefs.severity == 'Ringan') {
+          _selectedSeverityIndex = 0;
+        } else if (userPrefs.severity == 'Berat') _selectedSeverityIndex = 2;
         else _selectedSeverityIndex = 1;
       });
     });
